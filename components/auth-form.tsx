@@ -43,7 +43,8 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
     }
 
     triggerSensory('milestone')
-    router.push('/')
+    // New sign-ups go to onboarding; sign-ins go to dashboard
+    router.push(isSignUp ? '/onboarding' : '/')
     router.refresh()
   }
 
