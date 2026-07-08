@@ -199,7 +199,7 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
           type="button"
           variant="secondary"
           size="icon"
-          aria-label="Ouvrir les prompts guid\u00e9s"
+          aria-label="Ouvrir les prompts guidés"
           onClick={() => {
             setPromptOpen(true)
             triggerSensory("tap")

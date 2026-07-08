@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Heart } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface MatchProfile {
@@ -36,9 +36,9 @@ export function MatchModal({ profile, onClose }: { profile: MatchProfile | null;
           </p>
         </div>
         <div className="flex w-full flex-col gap-2">
-          <Button asChild>
-            <Link href="/chat">Ouvrir la conversation</Link>
-          </Button>
+          <Link href="/chat" className={buttonVariants({ variant: "default" })}>
+            Ouvrir la conversation
+          </Link>
           <Button variant="ghost" onClick={onClose}>
             Continuer &agrave; d&eacute;couvrir
           </Button>

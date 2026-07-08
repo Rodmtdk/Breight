@@ -113,7 +113,7 @@ export function LocationPanel({
         </div>
         <Button onClick={handleUpdatePosition} disabled={busy} variant="secondary">
           <MapPin className="size-4" />
-          {busy ? "Localisation..." : "Mettre \u00e0 jour ma position"}
+          {busy ? "Localisation..." : "Mettre à jour ma position"}
         </Button>
         {error ? <p className="text-xs text-destructive">{error}</p> : null}
       </section>
@@ -124,7 +124,7 @@ export function LocationPanel({
         <div className="flex h-72 flex-col items-center justify-center gap-2 rounded-2xl border border-border bg-card px-8 text-center">
           <MapPin className="size-8 text-muted-foreground" aria-hidden="true" />
           <p className="text-sm leading-relaxed text-muted-foreground">
-            Aucune position partag&eacute;e. Mets \u00e0 jour ta position pour appara\u00eetre sur la carte.
+            Aucune position partag&eacute;e. Mets &agrave; jour ta position pour appara&icirc;tre sur la carte.
           </p>
         </div>
       )}
