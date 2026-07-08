@@ -7,11 +7,11 @@ import { cn } from '@/lib/utils'
 import { triggerSensory } from '@/lib/sensory'
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Accueil', icon: Home },
-  { href: '/discovery', label: 'Découvrir', icon: Compass },
-  { href: '/chat', label: 'Messages', icon: MessageCircle, badge: true },
-  { href: '/feed', label: 'Moments', icon: Camera },
-  { href: '/profile', label: 'Profil', icon: User },
+  { href: '/',          label: 'Accueil',   icon: Home          },
+  { href: '/discovery', label: 'Découvrir', icon: Compass       },
+  { href: '/chat',      label: 'Messages',  icon: MessageCircle, badge: true },
+  { href: '/feed',      label: 'Moments',   icon: Camera        },
+  { href: '/profile',   label: 'Profil',    icon: User          },
 ]
 
 export function BottomNav({ unreadCount = 0 }: { unreadCount?: number }) {
@@ -20,12 +20,11 @@ export function BottomNav({ unreadCount = 0 }: { unreadCount?: number }) {
   return (
     <nav
       aria-label="Navigation principale"
-      className="fixed bottom-0 inset-x-0 z-50 border-t border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80"
+      className="fixed bottom-0 inset-x-0 z-50 bg-card/96 backdrop-blur-xl border-t border-border/50 shadow-[0_-1px_16px_rgba(0,0,0,0.06)]"
     >
-      <div className="mx-auto max-w-lg flex items-stretch justify-between px-1 pb-[env(safe-area-inset-bottom)]">
+      <div className="mx-auto max-w-lg flex items-end justify-between px-2 pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         {NAV_ITEMS.map((item) => {
-          const active =
-            item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
+          const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
           const Icon = item.icon
           const showBadge = item.badge && unreadCount > 0
 
@@ -35,33 +34,29 @@ export function BottomNav({ unreadCount = 0 }: { unreadCount?: number }) {
               href={item.href}
               onClick={() => triggerSensory('tap')}
               className={cn(
-                'relative flex flex-1 flex-col items-center gap-1 py-3 text-[10px] font-medium transition-colors',
-                active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+                'relative flex flex-1 flex-col items-center gap-1 py-1 text-[10px] font-medium transition-colors',
+                active ? 'text-jade' : 'text-muted-foreground',
               )}
               aria-current={active ? 'page' : undefined}
             >
-              {/* Icon container — filled background when active */}
+              {/* Icon pill */}
               <span className="relative">
                 <span
                   className={cn(
-                    'flex items-center justify-center size-9 rounded-xl transition-all duration-150',
-                    active ? 'bg-primary/8' : '',
+                    'flex items-center justify-center size-10 rounded-2xl transition-all duration-200',
+                    active ? 'bg-jade/10' : 'bg-transparent',
                   )}
                 >
                   <Icon
-                    className={cn(
-                      'size-5 transition-colors',
-                      active ? 'text-primary' : 'text-muted-foreground',
-                    )}
-                    strokeWidth={active ? 2.2 : 1.8}
+                    className={cn('size-[1.2rem] transition-colors', active ? 'text-jade' : 'text-muted-foreground')}
+                    strokeWidth={active ? 2.4 : 1.7}
                     aria-hidden="true"
                   />
                 </span>
 
-                {/* Unread badge */}
                 {showBadge && (
                   <span
-                    className="absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full bg-warm text-[9px] font-bold text-warm-foreground"
+                    className="absolute -top-0.5 -right-0.5 flex min-w-[1rem] h-4 items-center justify-center rounded-full bg-ruby text-[9px] font-bold text-ruby-foreground px-1"
                     aria-label={`${unreadCount} messages non lus`}
                   >
                     {unreadCount > 9 ? '9+' : unreadCount}
@@ -69,7 +64,7 @@ export function BottomNav({ unreadCount = 0 }: { unreadCount?: number }) {
                 )}
               </span>
 
-              <span className={cn(active ? 'text-primary' : '')}>{item.label}</span>
+              <span className={cn('leading-none', active ? 'text-jade font-semibold' : '')}>{item.label}</span>
             </Link>
           )
         })}

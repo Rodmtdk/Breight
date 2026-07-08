@@ -7,13 +7,13 @@ import { authClient } from '@/lib/auth-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ShieldCheck, Users, MessageCircle } from 'lucide-react'
+import { ShieldCheck, Users, MessageCircle, ArrowRight } from 'lucide-react'
 import { triggerSensory } from '@/lib/sensory'
 
 const TRUST_POINTS = [
-  { icon: Users, text: 'Rencontres basées sur les vraies affinités' },
-  { icon: MessageCircle, text: 'Conversations qui dépassent le superficiel' },
-  { icon: ShieldCheck, text: 'Chiffrement E2E — tes mots t\'appartiennent' },
+  { icon: Users,         color: 'text-jade',   bg: 'bg-jade/10',   text: 'Rencontres basées sur les vraies affinités' },
+  { icon: MessageCircle, color: 'text-cobalt',  bg: 'bg-cobalt/10', text: 'Conversations qui dépassent le superficiel' },
+  { icon: ShieldCheck,   color: 'text-mauve',   bg: 'bg-mauve/10',  text: "Chiffrement E2E — tes mots t'appartiennent" },
 ]
 
 export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
@@ -50,41 +50,41 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
   return (
     <main className="min-h-svh bg-background flex flex-col">
 
-      {/* Top bar */}
-      <div className="flex items-center justify-between px-5 py-4 max-w-lg mx-auto w-full">
-        <Link href="/welcome" className="text-lg font-semibold tracking-tight text-foreground">
-          BREIGHT
+      {/* ── Top bar ── */}
+      <div className="flex items-center justify-between px-5 py-5 max-w-lg mx-auto w-full">
+        <Link href="/welcome" className="font-serif text-xl font-semibold tracking-tight text-foreground">
+          Breight
         </Link>
         <Link
           href={isSignUp ? '/sign-in' : '/sign-up'}
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           {isSignUp ? 'Déjà membre ?' : 'Pas de compte ?'}{' '}
-          <span className="font-semibold text-foreground underline-offset-4 hover:underline">
+          <span className="font-semibold text-foreground">
             {isSignUp ? 'Connexion' : "S'inscrire"}
           </span>
         </Link>
       </div>
 
-      <div className="flex flex-1 flex-col max-w-lg mx-auto w-full px-5 pt-8 pb-16 gap-8">
+      <div className="flex flex-1 flex-col max-w-lg mx-auto w-full px-5 pt-6 pb-16 gap-9">
 
-        {/* Headline */}
+        {/* ── Headline ── */}
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground text-balance leading-snug">
-            {isSignUp ? 'Rejoins BREIGHT' : 'Content de te revoir'}
+          <h1 className="font-serif text-[2rem] font-semibold tracking-tight text-foreground text-balance leading-snug">
+            {isSignUp ? 'Rejoins Breight' : 'Content de te revoir'}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
             {isSignUp
               ? 'Crée ton compte gratuitement en quelques secondes.'
-              : 'Connecte-toi pour reprendre tes conversations.'}
+              : 'Reconnecte-toi pour reprendre tes conversations.'}
           </p>
         </div>
 
-        {/* Form */}
+        {/* ── Form ── */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {isSignUp && (
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="name">Prénom</Label>
+              <Label htmlFor="name" className="text-[13px] font-medium text-foreground">Prénom</Label>
               <Input
                 id="name"
                 placeholder="Ton prénom"
@@ -93,12 +93,12 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
                 required
                 autoComplete="given-name"
                 autoFocus
-                className="h-11"
+                className="h-12 rounded-xl border-border/70 bg-card text-sm px-4 shadow-sm focus-visible:ring-jade/40"
               />
             </div>
           )}
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="email">Adresse email</Label>
+            <Label htmlFor="email" className="text-[13px] font-medium text-foreground">Adresse email</Label>
             <Input
               id="email"
               type="email"
@@ -108,11 +108,11 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
               required
               autoComplete="email"
               autoFocus={!isSignUp}
-              className="h-11"
+              className="h-12 rounded-xl border-border/70 bg-card text-sm px-4 shadow-sm focus-visible:ring-jade/40"
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="password">Mot de passe</Label>
+            <Label htmlFor="password" className="text-[13px] font-medium text-foreground">Mot de passe</Label>
             <Input
               id="password"
               type="password"
@@ -122,41 +122,45 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
               required
               minLength={8}
               autoComplete={isSignUp ? 'new-password' : 'current-password'}
-              className="h-11"
+              className="h-12 rounded-xl border-border/70 bg-card text-sm px-4 shadow-sm focus-visible:ring-jade/40"
             />
           </div>
 
           {error && (
-            <p className="text-sm text-destructive bg-destructive/8 rounded-lg px-3 py-2.5" role="alert">
+            <p className="text-sm text-ruby bg-ruby/8 rounded-xl px-4 py-2.5 border border-ruby/15" role="alert">
               {error}
             </p>
           )}
 
-          <Button type="submit" disabled={loading} className="w-full h-12 text-base mt-1">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full h-13 text-base font-semibold rounded-2xl mt-1 shadow-md shadow-jade/15 gap-2"
+          >
             {loading ? 'Un instant...' : isSignUp ? 'Créer mon compte' : 'Se connecter'}
+            {!loading && <ArrowRight className="size-4" aria-hidden="true" />}
           </Button>
         </form>
 
-        {/* Trust points — sign-up only */}
+        {/* ── Trust points — sign-up only ── */}
         {isSignUp && (
-          <div className="flex flex-col gap-3 pt-4 border-t border-border">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Pourquoi BREIGHT ?
+          <div className="flex flex-col gap-3 pt-5 border-t border-border/60">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+              Pourquoi Breight ?
             </p>
-            {TRUST_POINTS.map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-center gap-3">
-                <div className="flex-shrink-0 flex items-center justify-center size-7 rounded-lg bg-warm/10">
-                  <Icon className="size-3.5 text-warm" aria-hidden="true" />
+            {TRUST_POINTS.map(({ icon: Icon, color, bg, text }) => (
+              <div key={text} className="flex items-center gap-3.5">
+                <div className={`flex-shrink-0 flex items-center justify-center size-8 rounded-xl ${bg}`}>
+                  <Icon className={`size-4 ${color}`} aria-hidden="true" />
                 </div>
-                <p className="text-sm text-muted-foreground">{text}</p>
+                <p className="text-sm text-muted-foreground leading-snug">{text}</p>
               </div>
             ))}
           </div>
         )}
 
-        {/* Footer legal */}
         {isSignUp && (
-          <p className="text-xs text-muted-foreground text-center">
+          <p className="text-[11px] text-muted-foreground text-center -mt-4">
             En créant un compte tu acceptes nos{' '}
             <span className="underline underline-offset-2 cursor-pointer">conditions d&apos;utilisation</span>.
           </p>
