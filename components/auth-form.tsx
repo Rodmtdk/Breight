@@ -53,25 +53,18 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
         </div>
 
         <Card className="p-6">
-          <div className="mb-6">
-            <h1 className="text-xl font-semibold tracking-tight text-foreground">
-              {isSignUp ? 'Créer un compte' : 'Bon retour'}
-            </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              {isSignUp ? 'Inscris-toi pour commencer' : 'Connecte-toi pour continuer'}
-            </p>
-          </div>
-
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {isSignUp && (
               <div className="flex flex-col gap-2">
                 <Label htmlFor="name">Prénom</Label>
                 <Input
                   id="name"
+                  placeholder="Ton prénom"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
                   autoComplete="name"
+                  autoFocus
                 />
               </div>
             )}
@@ -80,17 +73,22 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
               <Input
                 id="email"
                 type="email"
+                placeholder="toi@exemple.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
+                autoFocus={!isSignUp}
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="password">Mot de passe</Label>
+              <Label htmlFor="password">
+                {isSignUp ? 'Mot de passe' : 'Mot de passe'}
+              </Label>
               <Input
                 id="password"
                 type="password"
+                placeholder={isSignUp ? 'Minimum 8 caractères' : '••••••••'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -105,7 +103,7 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
               </p>
             )}
 
-            <Button type="submit" disabled={loading} className="w-full">
+            <Button type="submit" disabled={loading} className="w-full mt-2">
               {loading ? 'Un instant...' : isSignUp ? 'Créer mon compte' : 'Se connecter'}
             </Button>
           </form>
