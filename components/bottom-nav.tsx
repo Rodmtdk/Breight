@@ -22,7 +22,7 @@ export function BottomNav({ unreadCount = 0 }: { unreadCount?: number }) {
       aria-label="Navigation principale"
       className="fixed bottom-0 inset-x-0 z-50 border-t border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80"
     >
-      <div className="mx-auto max-w-lg flex items-stretch justify-between px-2 pb-[env(safe-area-inset-bottom)]">
+      <div className="mx-auto max-w-lg flex items-stretch justify-between px-1 pb-[env(safe-area-inset-bottom)]">
         {NAV_ITEMS.map((item) => {
           const active =
             item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
@@ -35,26 +35,33 @@ export function BottomNav({ unreadCount = 0 }: { unreadCount?: number }) {
               href={item.href}
               onClick={() => triggerSensory('tap')}
               className={cn(
-                'relative flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors',
-                active ? 'text-warm' : 'text-muted-foreground hover:text-foreground',
+                'relative flex flex-1 flex-col items-center gap-1 py-3 text-[10px] font-medium transition-colors',
+                active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
               )}
               aria-current={active ? 'page' : undefined}
             >
-              {/* Active pill indicator */}
-              <span
-                className={cn(
-                  'absolute top-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full bg-warm transition-all duration-200',
-                  active ? 'w-6 opacity-100' : 'w-0 opacity-0',
-                )}
-                aria-hidden="true"
-              />
-
-              {/* Icon + optional badge */}
+              {/* Icon container — filled background when active */}
               <span className="relative">
-                <Icon className="size-5" aria-hidden="true" />
+                <span
+                  className={cn(
+                    'flex items-center justify-center size-9 rounded-xl transition-all duration-150',
+                    active ? 'bg-primary/8' : '',
+                  )}
+                >
+                  <Icon
+                    className={cn(
+                      'size-5 transition-colors',
+                      active ? 'text-primary' : 'text-muted-foreground',
+                    )}
+                    strokeWidth={active ? 2.2 : 1.8}
+                    aria-hidden="true"
+                  />
+                </span>
+
+                {/* Unread badge */}
                 {showBadge && (
                   <span
-                    className="absolute -top-1 -right-1.5 flex size-4 items-center justify-center rounded-full bg-warm text-[9px] font-bold text-warm-foreground"
+                    className="absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full bg-warm text-[9px] font-bold text-warm-foreground"
                     aria-label={`${unreadCount} messages non lus`}
                   >
                     {unreadCount > 9 ? '9+' : unreadCount}
@@ -62,7 +69,7 @@ export function BottomNav({ unreadCount = 0 }: { unreadCount?: number }) {
                 )}
               </span>
 
-              {item.label}
+              <span className={cn(active ? 'text-primary' : '')}>{item.label}</span>
             </Link>
           )
         })}
