@@ -15,10 +15,14 @@ export const auth = betterAuth({
     autoSignIn: true,
   },
   trustedOrigins: [
+    // Local dev
     ...(process.env.NODE_ENV === 'development'
       ? ['http://localhost:3000', 'http://localhost:3001']
       : []),
+    // v0 preview — the iframe and the runtime URL must both be trusted
     ...(process.env.V0_RUNTIME_URL ? [process.env.V0_RUNTIME_URL] : []),
+    ...(process.env.V0_CALLBACK_URL ? [process.env.V0_CALLBACK_URL] : []),
+    // Vercel deployment URLs
     ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
     ...(process.env.VERCEL_PROJECT_PRODUCTION_URL
       ? [`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`]

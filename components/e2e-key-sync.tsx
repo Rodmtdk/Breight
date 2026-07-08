@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { getOrCreateKeyPair } from '@/lib/crypto'
 import { publishPublicKey } from '@/app/actions/profile'
 
@@ -10,7 +11,12 @@ import { publishPublicKey } from '@/app/actions/profile'
  * The private key never leaves the device.
  */
 export function E2EKeySync() {
+  const pathname = usePathname()
+
   useEffect(() => {
+    // Skip on public auth pages — there is no session there.
+    if (pathname === '/sign-in' || pathname === '/sign-up') return
+
     let cancelled = false
     async function sync() {
       try {
@@ -26,7 +32,7 @@ export function E2EKeySync() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [pathname])
 
   return null
 }
