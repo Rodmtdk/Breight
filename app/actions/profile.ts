@@ -72,6 +72,19 @@ export async function upsertProfile(data: {
  * for this user. Only the PUBLIC key is ever sent to the server.
  */
 export async function publishPublicKey(publicKey: string) {
-  const userId = await getUserId()
-  await db.update(profiles).set({ publicKey, updatedAt: new Date() }).where(eq(profiles.userId, userId))
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session?.user) throw new Error("Unauthorized")
+  const userId = session.user.id
+  const existing = await db.select().from(profiles).where(eq(profiles.userId, userId)).limit(1)
+  if (existing.length > 0) {
+    await db.update(profiles).set({ publicKey, updatedAt: new Date() }).where(eq(profiles.userId, userId))
+  } else {
+    // First launch on this device before the profile was filled in:
+    // create a minimal profile so the public key is available to contacts.
+    await db.insert(profiles).values({
+      userId,
+      displayName: session.user.name || "Utilisateur",
+      publicKey,
+    })
+  }
 }
