@@ -7,6 +7,7 @@ import { BottomNav } from '@/components/bottom-nav'
 import { E2EKeySync } from '@/components/e2e-key-sync'
 import { EmpathyReport } from '@/components/dashboard/empathy-report'
 import { MoodCheckin } from '@/components/dashboard/mood-checkin'
+import { DailyPrompt } from '@/components/dashboard/daily-prompt'
 import { Card } from '@/components/ui/card'
 import { Music, MapPin, StickyNote, LockKeyhole } from 'lucide-react'
 
@@ -35,6 +36,7 @@ export default async function HomePage() {
 
       <main className="mx-auto max-w-lg px-4 flex flex-col gap-4 pt-4">
         <MoodCheckin />
+        <DailyPrompt />
         <EmpathyReport />
 
         <section aria-label="Raccourcis" className="grid grid-cols-3 gap-3">
