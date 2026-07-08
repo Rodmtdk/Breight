@@ -73,7 +73,9 @@ export async function upsertProfile(data: {
  */
 export async function publishPublicKey(publicKey: string) {
   const session = await auth.api.getSession({ headers: await headers() })
-  if (!session?.user) throw new Error("Unauthorized")
+  // Best-effort background sync: no session on public pages (sign-in/sign-up).
+  // Return silently instead of throwing so the page never 500s.
+  if (!session?.user) return { ok: false }
   const userId = session.user.id
   const existing = await db.select().from(profiles).where(eq(profiles.userId, userId)).limit(1)
   if (existing.length > 0) {
