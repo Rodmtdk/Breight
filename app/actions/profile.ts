@@ -1,4 +1,5 @@
 "use server"
+// v2 — publishPublicKey returns silently when unauthenticated (no 500 on auth pages)
 
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
