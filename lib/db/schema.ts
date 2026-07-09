@@ -179,6 +179,17 @@ export const feedItems = pgTable("feed_items", {
   visibility: text("visibility").notNull().default("friends"),
 })
 
+export const momentPostWindow = pgTable("moment_post_window", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text("userId").notNull().unique(),
+  lastPostedAt: timestamp("lastPostedAt"),
+  notificationSentAt: timestamp("notificationSentAt"),
+  postWindowOpensAt: timestamp("postWindowOpensAt").notNull(), // Today at 12:12 UTC
+  postWindowClosesAt: timestamp("postWindowClosesAt").notNull(), // Tomorrow at 12:12 UTC
+  hasPostedToday: boolean("hasPostedToday").notNull().default(false),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+})
+
 export const notes = pgTable("notes", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   userId: text("userId").notNull(),
