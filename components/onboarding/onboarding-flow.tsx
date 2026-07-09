@@ -9,7 +9,8 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { triggerSensory } from '@/lib/sensory'
 import { cn } from '@/lib/utils'
-import { ArrowRight, Check, Sparkles, Users, ShieldCheck } from 'lucide-react'
+import { BREIGHT } from '@/lib/breight-brand'
+import { ArrowRight, Check, Sparkles, Users, ShieldCheck, Ear, Heart, Lock } from 'lucide-react'
 
 const INTERESTS = [
   'Musique', 'Sport', 'Voyage', 'Cuisine', 'Gaming', 'Lecture',
@@ -18,9 +19,10 @@ const INTERESTS = [
 ]
 
 const STEPS = [
-  { id: 1, label: 'Qui tu es', hint: 'Quelques mots pour te présenter' },
-  { id: 2, label: 'Tes passions', hint: 'Choisis au moins 3 centres d\'intérêt' },
-  { id: 3, label: "C'est parti", hint: 'Tout est prêt' },
+  { id: 1, label: 'Bienvenue', hint: 'Découvre la philosophie BREIGHT' },
+  { id: 2, label: 'Qui tu es', hint: 'Quelques mots pour te présenter' },
+  { id: 3, label: 'Tes passions', hint: 'Choisis au moins 3 centres d\'intérêt' },
+  { id: 4, label: "C'est parti", hint: 'Tout est prêt' },
 ]
 
 export function OnboardingFlow({ userName }: { userName: string }) {
@@ -84,8 +86,48 @@ export function OnboardingFlow({ userName }: { userName: string }) {
         </p>
       </div>
 
-      {/* Step 1 — Identity */}
+      {/* Step 1 — Welcome to Breight */}
       {step === 1 && (
+        <div className="flex flex-1 flex-col gap-8 animate-in fade-in slide-in-from-right-4 duration-300 py-8">
+          <div className="text-center">
+            <h1 className="font-serif text-4xl font-bold tracking-tight text-foreground text-balance">
+              Bienvenue dans BREIGHT
+            </h1>
+            <p className="mt-3 text-base text-muted-foreground leading-relaxed max-w-sm mx-auto">
+              {BREIGHT.manifesto.subheading}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            {[
+              { icon: Ear, label: BREIGHT.principles[0].title, desc: BREIGHT.principles[0].description },
+              { icon: Heart, label: BREIGHT.principles[3].title, desc: BREIGHT.principles[3].description },
+              { icon: Lock, label: BREIGHT.principles[4].title, desc: BREIGHT.principles[4].description },
+            ].map(({ icon: Icon, label, desc }) => (
+              <div key={label} className="flex items-start gap-3 rounded-xl bg-card border border-border p-4">
+                <div className="flex size-10 flex-shrink-0 items-center justify-center rounded-lg bg-jade/10">
+                  <Icon className="size-5 text-jade" aria-hidden="true" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{label}</p>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <Button
+            className="w-full h-12 text-base mt-auto"
+            onClick={() => { triggerSensory('tap'); setStep(2) }}
+          >
+            Découvrir
+            <ArrowRight className="ml-2 size-4" />
+          </Button>
+        </div>
+      )}
+
+      {/* Step 2 — Identity */}
+      {step === 2 && (
         <div className="flex flex-1 flex-col gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
           <div>
             <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground text-balance">
@@ -152,7 +194,7 @@ export function OnboardingFlow({ userName }: { userName: string }) {
             <Button
               className="w-full h-12 text-base"
               disabled={!displayName.trim()}
-              onClick={() => { triggerSensory('tap'); setStep(2) }}
+            onClick={() => { triggerSensory('tap'); setStep(3) }}
             >
               Continuer
               <ArrowRight className="ml-2 size-4" />
@@ -161,8 +203,8 @@ export function OnboardingFlow({ userName }: { userName: string }) {
         </div>
       )}
 
-      {/* Step 2 — Interests */}
-      {step === 2 && (
+      {/* Step 3 — Interests */}
+      {step === 3 && (
         <div className="flex flex-1 flex-col gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
           <div>
             <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground text-balance">
@@ -205,7 +247,7 @@ export function OnboardingFlow({ userName }: { userName: string }) {
             <Button
               className="w-full h-12 text-base"
               disabled={interests.length < 3}
-              onClick={() => { triggerSensory('tap'); setStep(3) }}
+              onClick={() => { triggerSensory('tap'); setStep(4) }}
             >
               Continuer
               <ArrowRight className="ml-2 size-4" />
@@ -217,8 +259,8 @@ export function OnboardingFlow({ userName }: { userName: string }) {
         </div>
       )}
 
-      {/* Step 3 — Launch */}
-      {step === 3 && (
+      {/* Step 4 — Launch */}
+      {step === 4 && (
         <div className="flex flex-1 flex-col items-center justify-center gap-8 py-10 animate-in fade-in zoom-in-95 duration-300">
           <div className="text-center">
             <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground text-balance">

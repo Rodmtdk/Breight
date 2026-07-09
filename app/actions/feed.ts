@@ -72,6 +72,13 @@ export async function postMoment(data: {
     feedType: data.mediaUrl ? "moment" : "status",
     expiresAt: data.ephemeral ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null,
   })
+  
+  // Mark user as having posted today (if ephemeral/daily moment)
+  if (data.ephemeral) {
+    const { markMomentPosted } = await import("./moment-window")
+    await markMomentPosted()
+  }
+  
   await db.insert(auditLogs).values({ userId, action: "feed.post", resource: "feed_items" })
   revalidatePath("/feed")
   return { ok: true }
