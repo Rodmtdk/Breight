@@ -11,20 +11,20 @@ import { DailyPrompt } from '@/components/dashboard/daily-prompt'
 import { Music, MapPin, StickyNote, Compass, MessageCircle, Camera } from 'lucide-react'
 
 const QUICK_ACTIONS = [
-  { href: '/discovery', icon: Compass,       label: 'Découvrir',  desc: 'Profils compatibles', accent: 'jade'   },
-  { href: '/chat',      icon: MessageCircle, label: 'Messages',   desc: 'Tes conversations',   accent: 'cobalt' },
-  { href: '/feed',      icon: Camera,        label: 'Moments',    desc: 'Partage ton quotidien', accent: 'mauve' },
-  { href: '/music',     icon: Music,         label: 'Musique',    desc: 'Ce que tu écoutes',   accent: 'gold'   },
-  { href: '/map',       icon: MapPin,        label: 'Carte',      desc: 'Près de toi',          accent: 'ruby'   },
-  { href: '/notes',     icon: StickyNote,    label: 'Notes',      desc: 'Souvenirs partagés',  accent: 'cobalt' },
+  { href: '/discovery', icon: Compass,       label: 'Découvrir',  desc: 'Affinités réelles', accent: 'jade'   },
+  { href: '/chat',      icon: MessageCircle, label: 'Messages',   desc: 'Conversations',     accent: 'cobalt' },
+  { href: '/feed',      icon: Camera,        label: 'Moments',    desc: 'Quotidien',         accent: 'mauve' },
+  { href: '/music',     icon: Music,         label: 'Musique',    desc: 'Ce que tu écoutes', accent: 'gold'   },
+  { href: '/map',       icon: MapPin,        label: 'Carte',      desc: 'Connexions près',   accent: 'ruby'   },
+  { href: '/notes',     icon: StickyNote,    label: 'Notes',      desc: 'Souvenirs',         accent: 'mauve'  },
 ]
 
-const ACCENT: Record<string, { bg: string; icon: string }> = {
-  jade:   { bg: 'bg-jade/10',   icon: 'text-jade'   },
-  cobalt: { bg: 'bg-cobalt/10', icon: 'text-cobalt'  },
-  mauve:  { bg: 'bg-mauve/10',  icon: 'text-mauve'   },
-  gold:   { bg: 'bg-gold/10',   icon: 'text-gold'    },
-  ruby:   { bg: 'bg-ruby/10',   icon: 'text-ruby'    },
+const ACCENT: Record<string, { bg: string; icon: string; gradBg: string }> = {
+  jade:   { bg: 'bg-jade/10',   icon: 'text-jade',    gradBg: 'from-jade/8' },
+  cobalt: { bg: 'bg-cobalt/10', icon: 'text-cobalt',  gradBg: 'from-cobalt/8' },
+  mauve:  { bg: 'bg-mauve/10',  icon: 'text-mauve',   gradBg: 'from-mauve/8' },
+  gold:   { bg: 'bg-gold/10',   icon: 'text-gold',    gradBg: 'from-gold/8' },
+  ruby:   { bg: 'bg-ruby/10',   icon: 'text-ruby',    gradBg: 'from-ruby/8' },
 }
 
 export default async function HomePage() {
@@ -39,54 +39,76 @@ export default async function HomePage() {
   const greeting = hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir'
 
   return (
-    <div className="min-h-svh bg-background pb-28">
+    <div className="min-h-svh bg-background pb-32 relative overflow-hidden">
       <E2EKeySync />
 
+      {/* ── Animated background blobs ── */}
+      <div className="fixed inset-0 pointer-events-none -z-10">
+        <div className="absolute -top-32 -right-32 w-80 h-80 bg-gradient-to-br from-jade/6 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s' }} aria-hidden="true" />
+        <div className="absolute -bottom-32 left-1/4 w-72 h-72 bg-gradient-to-tr from-mauve/4 to-transparent rounded-full blur-3xl" style={{ animationDelay: '1s' }} aria-hidden="true" />
+      </div>
+
       {/* ── Header ── */}
-      <header className="mx-auto max-w-lg px-5 pt-10 pb-2 flex items-end justify-between">
-        <div>
-          <p className="text-xs text-muted-foreground tracking-wide">{greeting},</p>
-          <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground mt-0.5 leading-tight">
+      <header className="mx-auto max-w-lg px-5 pt-10 pb-4 flex items-end justify-between relative z-10">
+        <div className="flex-1">
+          <p className="text-xs text-muted-foreground tracking-widest uppercase font-medium">{greeting}</p>
+          <h1 className="font-serif text-4xl font-black tracking-tight text-foreground mt-1 leading-tight">
             {firstName}
           </h1>
+          <div className="h-1 w-12 bg-gradient-to-r from-jade via-cobalt to-transparent rounded-full mt-3" aria-hidden="true" />
         </div>
         <Link href="/profile" aria-label="Profil">
-          <div className="size-10 rounded-full bg-jade/15 flex items-center justify-center text-jade font-semibold text-base">
+          <div className="size-12 rounded-2xl bg-gradient-to-br from-jade to-mauve flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-jade/30 hover:shadow-xl hover:scale-105 transition-all">
             {firstName[0]?.toUpperCase()}
           </div>
         </Link>
       </header>
 
-      <main className="mx-auto max-w-lg px-5 flex flex-col gap-9 mt-6">
+      <main className="mx-auto max-w-lg px-5 flex flex-col gap-10 mt-8 relative z-10">
 
         {/* ── Humeur ── */}
-        <section aria-labelledby="mood-heading">
-          <p id="mood-heading" className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-3">
-            Humeur du jour
+        <section aria-labelledby="mood-heading" className="group">
+          <p id="mood-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+            ✨ Ton humeur aujourd&apos;hui
           </p>
           <MoodCheckin />
         </section>
 
-        {/* ── Accès rapide ── */}
-        <section aria-labelledby="quick-heading">
-          <p id="quick-heading" className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-3">
-            Explorer
+        {/* ── Accès rapide — grille offset créative ── */}
+        <section aria-labelledby="quick-heading" className="group">
+          <p id="quick-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+            🔭 Explorer
           </p>
-          <div className="grid grid-cols-2 gap-3">
-            {QUICK_ACTIONS.map(({ href, icon: Icon, label, desc, accent }) => {
+          <div className="grid grid-cols-2 gap-4 relative">
+            {/* Subtle SVG decoration */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true">
+              <defs>
+                <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="currentColor" stopOpacity="0.1" />
+                  <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+            </svg>
+
+            {QUICK_ACTIONS.map(({ href, icon: Icon, label, desc, accent }, i) => {
               const cls = ACCENT[accent]
               return (
                 <Link
                   key={href}
                   href={href}
-                  className="group flex items-center gap-3 rounded-2xl bg-card border border-border/60 p-4 shadow-sm hover:shadow-md hover:border-border transition-all duration-150"
+                  className={`group/card relative flex flex-col gap-3 rounded-2xl p-5 transition-all duration-300 border hover:shadow-lg hover:-translate-y-1 overflow-hidden ${
+                    i % 3 === 0 ? `bg-gradient-to-br ${cls.gradBg} to-transparent border-${accent}/20` : 'bg-card border-border/50 shadow-sm'
+                  }`}
                 >
-                  <div className={`flex-shrink-0 flex items-center justify-center size-10 rounded-xl ${cls.bg} transition-colors`}>
+                  {/* Animated corner accent */}
+                  <div className="absolute -top-6 -right-6 w-16 h-16 rounded-full opacity-0 group-hover/card:opacity-100 transition-all duration-300 blur-xl" style={{ background: `var(--${accent})` }} aria-hidden="true" />
+
+                  <div className={`flex items-center justify-center size-11 rounded-xl ${cls.bg} group-hover/card:scale-110 transition-transform relative z-10`}>
                     <Icon className={`size-5 ${cls.icon}`} aria-hidden="true" />
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-[14px] font-semibold text-foreground leading-tight">{label}</p>
-                    <p className="text-[11px] text-muted-foreground leading-tight mt-0.5 truncate">{desc}</p>
+                  <div className="relative z-10">
+                    <p className="text-sm font-bold text-foreground leading-tight">{label}</p>
+                    <p className="text-xs text-muted-foreground leading-snug mt-1 font-medium">{desc}</p>
                   </div>
                 </Link>
               )
@@ -95,17 +117,17 @@ export default async function HomePage() {
         </section>
 
         {/* ── Question du jour ── */}
-        <section aria-labelledby="prompt-heading">
-          <p id="prompt-heading" className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-3">
-            Pour briser la glace
+        <section aria-labelledby="prompt-heading" className="group">
+          <p id="prompt-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+            💭 Pour briser la glace
           </p>
           <DailyPrompt />
         </section>
 
         {/* ── Score d'écoute ── */}
-        <section aria-labelledby="empathy-heading">
-          <p id="empathy-heading" className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-3">
-            Ton score d&apos;écoute
+        <section aria-labelledby="empathy-heading" className="group">
+          <p id="empathy-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+            👂 Ton score d&apos;écoute
           </p>
           <EmpathyReport />
         </section>
