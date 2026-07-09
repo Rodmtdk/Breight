@@ -305,3 +305,64 @@ export const dailyRituals = pgTable(
   },
   (t) => [unique().on(t.userId, t.date)],
 )
+
+// ---------- SOCIAL NETWORK ----------
+
+// Reactions (likes) sur Echoes/Moments
+export const reactions = pgTable(
+  "reactions",
+  {
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId").notNull(),
+    echoId: text("echoId").notNull(),
+    emoji: text("emoji").notNull().default("heart"), // 'heart' | 'fire' | 'light' | 'smile' | 'pray'
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+  },
+  (t) => [unique().on(t.userId, t.echoId)],
+)
+
+// Comments sur Echoes
+export const echoComments = pgTable("echo_comments", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  echoId: text("echoId").notNull(),
+  userId: text("userId").notNull(),
+  content: text("content").notNull(),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+})
+
+// Follows (Social graph)
+export const follows = pgTable(
+  "follows",
+  {
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+    followerId: text("followerId").notNull(), // Qui suit
+    followingId: text("followingId").notNull(), // Qui est suivi
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+  },
+  (t) => [unique().on(t.followerId, t.followingId)],
+)
+
+// Trending cache (mis à jour par cron)
+export const trending = pgTable(
+  "trending",
+  {
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+    echoId: text("echoId").notNull().unique(),
+    score: integer("score").notNull().default(0), // Calcul: reactions * 2 + comments * 3
+    rank: integer("rank").notNull(), // Position dans le trending
+    period: text("period").notNull().default("today"), // 'today' | 'week' | 'all'
+    updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+  },
+  (t) => [unique().on(t.echoId, t.period)],
+)
+
+// Social Notifications (pour FOMO builder)
+export const socialNotifications = pgTable("social_notifications", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text("userId").notNull(), // Qui reçoit la notif
+  actionUserId: text("actionUserId").notNull(), // Qui a fait l'action
+  type: text("type").notNull(), // 'like' | 'comment' | 'follow' | 'share'
+  targetId: text("targetId").notNull(), // echoId ou userId
+  read: boolean("read").notNull().default(false),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+})

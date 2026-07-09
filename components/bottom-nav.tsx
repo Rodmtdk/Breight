@@ -8,7 +8,7 @@ import { triggerSensory } from '@/lib/sensory'
 
 const NAV_ITEMS = [
   { href: '/',          label: 'Accueil',   icon: Home          },
-  { href: '/discovery', label: 'Découvrir', icon: Compass       },
+  { href: '/discover',  label: 'Découvrir', icon: Compass       },
   { href: '/chat',      label: 'Messages',  icon: MessageCircle, badge: true },
   { href: '/feed',      label: 'Moments',   icon: Camera        },
   { href: '/profile',   label: 'Profil',    icon: User          },
