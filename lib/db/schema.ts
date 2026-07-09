@@ -231,3 +231,77 @@ export const auditLogs = pgTable("audit_logs", {
   metadata: jsonb("metadata").default({}),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
 })
+
+// ---------- RARITY FEATURES ----------
+
+// 1. ECHOES SYSTEM — Réponses créent du contenu émergent visible aux autres
+export const echoes = pgTable("echoes", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  conversationId: text("conversationId").notNull(),
+  originalMessageId: text("originalMessageId").notNull(), // Le message qui crée l'echo
+  authorId: text("authorId").notNull(), // Qui a répondu
+  content: text("content").notNull(), // La réponse (déchiffrée pour créer l'echo)
+  visibility: text("visibility").notNull().default("friends"), // 'friends' | 'network' | 'public'
+  likeCount: integer("likeCount").notNull().default(0),
+  echoedAt: timestamp("echoedAt").notNull().defaultNow(),
+})
+
+// 2. LISTENING STYLE — Comment l'utilisateur écoute (pattern d'écoute unique)
+export const listeningStyle = pgTable(
+  "listening_style",
+  {
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId").notNull().unique(),
+    style: text("style").notNull(), // 'Patient' | 'Direct' | 'Empathetic' | 'Curious' | 'Reflective'
+    traits: jsonb("traits").default({}), // {asks_follow_ups: 8.2, shares_emotions: 7.1, ...}
+    compatibility: jsonb("compatibility").default({}), // {Patient: 85, Direct: 72, ...}
+    updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+  },
+  (t) => [unique().on(t.userId)],
+)
+
+// 3. PASSAGES & RITUALS — Rites d'initiation débloqués en montant en niveau
+export const passages = pgTable(
+  "passages",
+  {
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId").notNull(),
+    level: integer("level").notNull(), // 0: Sprout, 1: Listener, 2: Empath, 3: Sage, 4: Heart Listener
+    ritualCompleted: boolean("ritualCompleted").notNull().default(false),
+    ritualCompletedAt: timestamp("ritualCompletedAt"),
+    badge: text("badge"), // 'sprout_ritual' | 'listener_ritual' | ...
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+  },
+  (t) => [unique().on(t.userId, t.level)],
+)
+
+// 4. WEEKLY REFLECTIONS — Histoires poétiques hebdomadaires d'écoute
+export const weeklyReflections = pgTable(
+  "weekly_reflections",
+  {
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId").notNull(),
+    weekStart: date("weekStart").notNull(),
+    narrative: text("narrative").notNull(), // Texte narratif poétique généré
+    stats: jsonb("stats").default({}), // {follow_ups: 47, questions: 23, ...}
+    listeningScore: integer("listeningScore"),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+  },
+  (t) => [unique().on(t.userId, t.weekStart)],
+)
+
+// 5. DAILY RITUALS — Morning intentions & Night reflections
+export const dailyRituals = pgTable(
+  "daily_rituals",
+  {
+    id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId").notNull(),
+    date: date("date").notNull(),
+    morningIntention: text("morningIntention"), // "Je vais écouter sans juger aujourd'hui"
+    nightReflection: text("nightReflection"), // "Qui m'a vraiment écouté aujourd'hui ?"
+    morningCompletedAt: timestamp("morningCompletedAt"),
+    nightCompletedAt: timestamp("nightCompletedAt"),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+  },
+  (t) => [unique().on(t.userId, t.date)],
+)
