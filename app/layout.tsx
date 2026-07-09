@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description:
     "BREIGHT transforme la communication classique en méthode psychologique d'écoute. Messagerie chiffrée E2E, découverte d'amis, empathie en direct.",
   generator: 'v0.app',
+  other: {
+    'x-version': 'v1.0-production',
+  },
 }
 
 export const viewport: Viewport = {
