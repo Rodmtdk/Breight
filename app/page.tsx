@@ -8,7 +8,9 @@ import { E2EKeySync } from '@/components/e2e-key-sync'
 import { EmpathyReport } from '@/components/dashboard/empathy-report'
 import { MoodCheckin } from '@/components/dashboard/mood-checkin'
 import { DailyPrompt } from '@/components/dashboard/daily-prompt'
-import { Music, MapPin, StickyNote, Compass, MessageCircle, Camera } from 'lucide-react'
+import { DailyQuests } from '@/components/dashboard/daily-quests'
+import { ListeningScoreCard } from '@/components/listening-score-card'
+import { Music, MapPin, StickyNote, Compass, MessageCircle, Camera, ArrowRight } from 'lucide-react'
 
 const QUICK_ACTIONS = [
   { href: '/discovery', icon: Compass,       label: 'Découvrir',  desc: 'Affinités réelles', accent: 'jade'   },
@@ -65,6 +67,14 @@ export default async function HomePage() {
       </header>
 
       <main className="mx-auto max-w-lg px-5 flex flex-col gap-10 mt-8 relative z-10">
+
+        {/* ── Quêtes du jour ── */}
+        <section aria-labelledby="quests-heading" className="group">
+          <p id="quests-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+            🎯 Challenges d&apos;écoute
+          </p>
+          <DailyQuests />
+        </section>
 
         {/* ── Humeur ── */}
         <section aria-labelledby="mood-heading" className="group">
@@ -124,12 +134,21 @@ export default async function HomePage() {
           <DailyPrompt />
         </section>
 
-        {/* ── Score d'écoute ── */}
-        <section aria-labelledby="empathy-heading" className="group">
-          <p id="empathy-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+        {/* ── Score d'écoute + Leaderboard ── */}
+        <section aria-labelledby="score-heading" className="group">
+          <p id="score-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
             👂 Ton score d&apos;écoute
           </p>
-          <EmpathyReport />
+          <div className="space-y-4">
+            <ListeningScoreCard />
+            <Link href="/insights" className="flex items-center justify-between rounded-lg bg-secondary/50 hover:bg-secondary border border-border p-4 transition-colors group/link">
+              <div>
+                <p className="text-sm font-semibold text-foreground">Voir tes détails</p>
+                <p className="text-xs text-muted-foreground mt-1">Progression, badges, leaderboard</p>
+              </div>
+              <ArrowRight className="size-4 text-muted-foreground group-hover/link:translate-x-1 transition-transform" />
+            </Link>
+          </div>
         </section>
 
       </main>
