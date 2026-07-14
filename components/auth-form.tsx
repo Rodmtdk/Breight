@@ -53,7 +53,7 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
 
       {/* ── Top bar ── */}
       <div className="flex items-center justify-between px-5 py-5 max-w-lg mx-auto w-full">
-        <Link href="/welcome" className="font-serif text-xl font-semibold tracking-tight text-foreground">
+        <Link href="/welcome" className="font-serif text-2xl font-bold tracking-tight bg-gradient-to-r from-jade via-foreground to-ruby bg-clip-text text-transparent">
           Breight
         </Link>
         <Link
@@ -72,7 +72,11 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
         {/* ── Headline ── */}
         <div>
           <h1 className="font-serif text-[2rem] font-semibold tracking-tight text-foreground text-balance leading-snug">
-            {isSignUp ? 'Rejoins Breight' : 'Content de te revoir'}
+            {isSignUp ? (
+              <>Rejoins <span className="italic text-jade">Breight</span></>
+            ) : (
+              <>Content de te <span className="italic text-jade">revoir</span></>
+            )}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
             {isSignUp
