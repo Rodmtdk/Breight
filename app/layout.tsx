@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light',
-  themeColor: '#fbfcfe',
+  colorScheme: 'dark',
+  themeColor: '#0f1017',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr" className="bg-background">
+    <html lang="fr" className="dark bg-background">
       <body className={`${geistMono.variable} font-sans antialiased`}>
         <E2EKeySync />
         {children}
