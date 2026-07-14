@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import Link from 'next/link'
 import { E2EKeySync } from '@/components/e2e-key-sync'
 import { BottomNav } from '@/components/bottom-nav'
@@ -9,23 +8,23 @@ import { MoodCheckin } from '@/components/dashboard/mood-checkin'
 import { DailyPrompt } from '@/components/dashboard/daily-prompt'
 import { DailyQuests } from '@/components/dashboard/daily-quests'
 import { ListeningScoreCard } from '@/components/listening-score-card'
-import { Music, MapPin, StickyNote, Compass, MessageCircle, Camera, ArrowRight } from 'lucide-react'
+import { Music, MapPin, StickyNote, Compass, MessageCircle, Camera, ArrowUpRight } from 'lucide-react'
 
 const QUICK_ACTIONS = [
-  { href: '/discover',  icon: Compass,       label: 'Découvrir',  desc: 'Affinités réelles', accent: 'jade'   },
-  { href: '/chat',      icon: MessageCircle, label: 'Messages',   desc: 'Conversations',     accent: 'cobalt' },
-  { href: '/feed',      icon: Camera,        label: 'Moments',    desc: 'Quotidien',         accent: 'mauve' },
-  { href: '/music',     icon: Music,         label: 'Musique',    desc: 'Ce que tu écoutes', accent: 'gold'   },
-  { href: '/map',       icon: MapPin,        label: 'Carte',      desc: 'Connexions près',   accent: 'ruby'   },
-  { href: '/notes',     icon: StickyNote,    label: 'Notes',      desc: 'Souvenirs',         accent: 'mauve'  },
+  { href: '/discover',  icon: Compass,       label: 'Découvrir',  desc: 'Affinités réelles',   accent: 'jade'   },
+  { href: '/chat',      icon: MessageCircle, label: 'Messages',   desc: 'Conversations',        accent: 'cobalt' },
+  { href: '/feed',      icon: Camera,        label: 'Moments',    desc: 'Ton quotidien',        accent: 'mauve'  },
+  { href: '/music',     icon: Music,         label: 'Musique',    desc: "Ce que tu écoutes",    accent: 'gold'   },
+  { href: '/map',       icon: MapPin,        label: 'Carte',      desc: 'Connexions proches',   accent: 'ruby'   },
+  { href: '/notes',     icon: StickyNote,    label: 'Notes',      desc: 'Tes souvenirs',        accent: 'mauve'  },
 ]
 
-const ACCENT: Record<string, { bg: string; icon: string; gradBg: string }> = {
-  jade:   { bg: 'bg-jade/10',   icon: 'text-jade',    gradBg: 'from-jade/8' },
-  cobalt: { bg: 'bg-cobalt/10', icon: 'text-cobalt',  gradBg: 'from-cobalt/8' },
-  mauve:  { bg: 'bg-mauve/10',  icon: 'text-mauve',   gradBg: 'from-mauve/8' },
-  gold:   { bg: 'bg-gold/10',   icon: 'text-gold',    gradBg: 'from-gold/8' },
-  ruby:   { bg: 'bg-ruby/10',   icon: 'text-ruby',    gradBg: 'from-ruby/8' },
+const ACCENT_STYLES: Record<string, { dot: string; icon: string; border: string }> = {
+  jade:   { dot: 'bg-jade',   icon: 'text-jade',   border: 'group-hover/action:border-jade/40' },
+  cobalt: { dot: 'bg-cobalt', icon: 'text-cobalt', border: 'group-hover/action:border-cobalt/40' },
+  mauve:  { dot: 'bg-mauve',  icon: 'text-mauve',  border: 'group-hover/action:border-mauve/40' },
+  gold:   { dot: 'bg-gold',   icon: 'text-gold',   border: 'group-hover/action:border-gold/40' },
+  ruby:   { dot: 'bg-ruby',   icon: 'text-ruby',   border: 'group-hover/action:border-ruby/40' },
 }
 
 interface HomeClientProps {
@@ -36,87 +35,120 @@ export function HomeClient({ profile }: HomeClientProps) {
   const firstName = profile.displayName.split(' ')[0]
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir'
+  const dateLabel = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date())
 
   return (
-    <div className="min-h-svh bg-background pb-32 relative overflow-hidden">
+    <div className="min-h-svh bg-background pb-32 relative">
       <E2EKeySync />
 
-      <div className="fixed inset-0 pointer-events-none -z-10">
-        <div className="absolute -top-32 -right-32 w-80 h-80 bg-gradient-to-br from-jade/6 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s' }} aria-hidden="true" />
-        <div className="absolute -bottom-32 left-1/4 w-72 h-72 bg-gradient-to-tr from-mauve/4 to-transparent rounded-full blur-3xl" style={{ animationDelay: '1s' }} aria-hidden="true" />
-      </div>
-
-      <header className="mx-auto max-w-lg px-5 pt-10 pb-4 flex items-end justify-between relative z-10">
-        <div className="flex-1">
-          <p className="text-xs text-muted-foreground tracking-widest uppercase font-medium">{greeting}</p>
-          <h1 className="font-serif text-4xl font-black tracking-tight text-foreground mt-1 leading-tight">
+      {/* Header */}
+      <header className="mx-auto max-w-lg px-5 pt-12 pb-6 flex items-start justify-between">
+        <div className="flex-1 min-w-0">
+          <p className="text-xs text-muted-foreground tracking-[0.18em] uppercase font-medium mb-1">
+            {greeting}
+          </p>
+          <h1 className="font-serif text-[2.6rem] font-black tracking-tight text-foreground leading-[1.05]">
             {firstName}
           </h1>
-          <div className="h-1 w-12 bg-gradient-to-r from-jade via-cobalt to-transparent rounded-full mt-3" aria-hidden="true" />
+          <p className="text-xs text-muted-foreground mt-2 capitalize">{dateLabel}</p>
         </div>
-        <Link href="/profile" aria-label="Profil">
-          <div className="size-12 rounded-2xl bg-gradient-to-br from-jade to-mauve flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-jade/30 hover:shadow-xl hover:scale-105 transition-all">
+
+        <Link href="/profile" aria-label="Profil" className="mt-1 shrink-0">
+          <div className="size-11 rounded-full bg-muted border border-border flex items-center justify-center text-foreground font-semibold text-base hover:border-jade/60 transition-colors">
             {firstName[0]?.toUpperCase()}
           </div>
         </Link>
       </header>
 
-      <main className="mx-auto max-w-lg px-5 flex flex-col gap-10 mt-8 relative z-10">
-        <section aria-labelledby="quests-heading" className="group">
-          <p id="quests-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
-            🎯 Challenges d&apos;écoute
-          </p>
-          <DailyQuests />
-        </section>
+      {/* Thin rule */}
+      <div className="mx-auto max-w-lg px-5">
+        <div className="h-px bg-border" />
+      </div>
 
-        <section aria-labelledby="mood-heading" className="group">
-          <p id="mood-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
-            ✨ Ton humeur aujourd&apos;hui
-          </p>
-          <MoodCheckin />
-        </section>
+      <main className="mx-auto max-w-lg px-5 flex flex-col gap-0 mt-0">
 
-        <section aria-labelledby="prompt-heading" className="group">
-          <p id="prompt-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
-            💭 Pour briser la glace
-          </p>
-          <DailyPrompt />
-        </section>
-
-        <section aria-labelledby="actions-heading" className="group">
-          <p id="actions-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
-            🚀 Explore
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            {QUICK_ACTIONS.map(({ href, icon: Icon, label, accent }) => (
-              <Link key={href} href={href} className="group/action">
-                <div className={`${ACCENT[accent].bg} rounded-xl p-4 hover:scale-105 transition-transform border border-border`}>
-                  <Icon className={`${ACCENT[accent].icon} size-5 mb-2`} />
-                  <p className="text-xs font-semibold text-foreground">{label}</p>
-                </div>
-              </Link>
-            ))}
+        {/* Section: Challenges */}
+        <section aria-labelledby="quests-heading" className="py-8 border-b border-border">
+          <SectionLabel id="quests-heading" index="01" label="Challenges d'écoute" />
+          <div className="mt-5">
+            <DailyQuests />
           </div>
         </section>
 
-        <section aria-labelledby="score-heading" className="group">
-          <p id="score-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
-            👂 Ton score d&apos;écoute
-          </p>
-          <div className="space-y-4">
+        {/* Section: Humeur */}
+        <section aria-labelledby="mood-heading" className="py-8 border-b border-border">
+          <SectionLabel id="mood-heading" index="02" label="Humeur du jour" />
+          <div className="mt-5">
+            <MoodCheckin />
+          </div>
+        </section>
+
+        {/* Section: Brise-glace */}
+        <section aria-labelledby="prompt-heading" className="py-8 border-b border-border">
+          <SectionLabel id="prompt-heading" index="03" label="Brise-glace" />
+          <div className="mt-5">
+            <DailyPrompt />
+          </div>
+        </section>
+
+        {/* Section: Explorer */}
+        <section aria-labelledby="actions-heading" className="py-8 border-b border-border">
+          <SectionLabel id="actions-heading" index="04" label="Explorer" />
+          <div className="mt-5 grid grid-cols-2 gap-2.5">
+            {QUICK_ACTIONS.map(({ href, icon: Icon, label, desc, accent }) => {
+              const s = ACCENT_STYLES[accent]
+              return (
+                <Link key={href} href={href} className="group/action">
+                  <div className={`relative flex flex-col gap-3 rounded-xl border border-border bg-card p-4 transition-all duration-200 hover:bg-secondary/60 ${s.border}`}>
+                    <div className="flex items-center justify-between">
+                      <Icon className={`size-4 ${s.icon}`} />
+                      <ArrowUpRight className="size-3.5 text-muted-foreground/40 group-hover/action:text-muted-foreground transition-colors" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground leading-none">{label}</p>
+                      <p className="text-[11px] text-muted-foreground mt-1.5 leading-none">{desc}</p>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </section>
+
+        {/* Section: Score */}
+        <section aria-labelledby="score-heading" className="py-8">
+          <SectionLabel id="score-heading" index="05" label="Score d'écoute" />
+          <div className="mt-5 flex flex-col gap-3">
             <ListeningScoreCard />
-            <Link href="/insights" className="flex items-center justify-between rounded-lg bg-secondary/50 hover:bg-secondary border border-border p-4 transition-colors group/link">
+            <Link
+              href="/insights"
+              className="flex items-center justify-between rounded-xl border border-border bg-card hover:bg-secondary/60 px-4 py-3.5 transition-all group/link"
+            >
               <div>
-                <p className="text-sm font-semibold text-foreground">Voir tes détails</p>
-                <p className="text-xs text-muted-foreground mt-1">Progression, badges, leaderboard</p>
+                <p className="text-sm font-semibold text-foreground">Voir mes détails</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Progression, badges, leaderboard</p>
               </div>
-              <ArrowRight className="size-4 text-muted-foreground group-hover/link:translate-x-1 transition-transform" />
+              <ArrowUpRight className="size-4 text-muted-foreground/50 group-hover/link:text-foreground transition-colors" />
             </Link>
           </div>
         </section>
+
       </main>
 
       <BottomNav />
+    </div>
+  )
+}
+
+function SectionLabel({ id, index, label }: { id: string; index: string; label: string }) {
+  return (
+    <div id={id} className="flex items-baseline gap-3">
+      <span className="text-[10px] font-mono text-muted-foreground/40 tracking-widest tabular-nums select-none">
+        {index}
+      </span>
+      <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        {label}
+      </span>
     </div>
   )
 }
