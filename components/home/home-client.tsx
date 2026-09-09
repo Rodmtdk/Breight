@@ -9,6 +9,7 @@ import { MoodCheckin } from '@/components/dashboard/mood-checkin'
 import { DailyPrompt } from '@/components/dashboard/daily-prompt'
 import { DailyQuests } from '@/components/dashboard/daily-quests'
 import { ListeningScoreCard } from '@/components/listening-score-card'
+import { ProfessionalSuiteHub } from '@/components/professional-suite-hub'
 import { Music, MapPin, StickyNote, Compass, MessageCircle, Camera, ArrowRight } from 'lucide-react'
 
 const QUICK_ACTIONS = [
@@ -66,6 +67,11 @@ export function HomeClient({ profile }: HomeClientProps) {
             🎯 Challenges d&apos;écoute
           </p>
           <DailyQuests />
+        </section>
+
+        <section aria-labelledby="suite-heading" className="group">
+          <p id="suite-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4">La suite professionnelle</p>
+          <ProfessionalSuiteHub />
         </section>
 
         <section aria-labelledby="mood-heading" className="group">

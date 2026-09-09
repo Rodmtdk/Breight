@@ -136,6 +136,34 @@ export const BREIGHT = {
     },
   },
 
+  // Professional suite bridge: portfolio proves, manual transmits, Breight connects
+  professionalSuite: {
+    eyebrow: 'La suite Quentin Huchez',
+    title: 'Du geste maîtrisé à la connexion vraie.',
+    description: 'Le portfolio montre le savoir-faire. Le Manuel d’Atelier transmet la méthode. Breight relie les personnes qui veulent progresser ensemble.',
+    portfolio: {
+      label: 'Portfolio',
+      title: 'Voir le geste',
+      description: 'Réalisations, précision et parcours de Quentin Huchez.',
+      href: 'https://v0.app/rodmtdk/chat/portfolio-quentin-huchez-dT8QWDYPMbP',
+      accent: 'jade',
+    },
+    manual: {
+      label: 'Manuel d’Atelier',
+      title: 'Comprendre la méthode',
+      description: 'Usinage, rectification, mesure et transmission du savoir.',
+      href: 'https://v0.app/rodmtdk/chat/manuel-atelier2026-KIVjVMpF50Q',
+      accent: 'cobalt',
+    },
+    network: {
+      label: 'Breight',
+      title: 'Faire réseau',
+      description: 'Échanger, demander un retour et trouver les bonnes personnes.',
+      href: '/discover',
+      accent: 'mauve',
+    },
+  },
+
   // Copywriting guidelines
   copy: {
     welcomeBack: (name: string) => `Bienvenue, ${name}. Qui écouterez-tu aujourd\'hui ?`,

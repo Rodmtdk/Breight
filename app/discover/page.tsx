@@ -6,7 +6,8 @@ import { BottomNav } from '@/components/bottom-nav'
 import { TrendingList } from '@/components/trending-list'
 import { FollowButton } from '@/components/follow-button'
 import { getTrending, getNotifications, getUnreadNotificationCount } from '@/app/actions/social'
-import { Flame, Users, Eye, Zap } from 'lucide-react'
+import { Flame, Users, Eye, Zap, BookOpen, Crosshair } from 'lucide-react'
+import { BREIGHT } from '@/lib/breight-brand'
 
 const MOCK_TRENDING = [
   { echoId: '1', score: 342, rank: 1, author: 'Sarah L.', preview: 'Écouter vraiment, c\'est accepter de ne pas avoir de réponse...' },
@@ -46,6 +47,25 @@ export default async function DiscoverPage() {
             Gens
           </button>
         </div>
+
+        {/* Professional suite bridge */}
+        <section className="precision-grid rounded-2xl border border-border bg-card/60 p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-jade">{BREIGHT.professionalSuite.eyebrow}</p>
+          <h2 className="mt-2 font-serif text-xl font-bold text-foreground">Un réseau qui sait d’où il vient.</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Découvre le geste, la méthode, puis les personnes qui peuvent t’aider à progresser.</p>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <Link href={BREIGHT.professionalSuite.portfolio.href} className="rounded-xl border border-jade/25 bg-jade/8 p-3 transition-colors hover:bg-jade/12">
+              <Crosshair className="size-4 text-jade" aria-hidden="true" />
+              <p className="mt-3 text-sm font-semibold text-foreground">{BREIGHT.professionalSuite.portfolio.title}</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Une réalisation pour lancer la conversation.</p>
+            </Link>
+            <Link href={BREIGHT.professionalSuite.manual.href} className="rounded-xl border border-cobalt/25 bg-cobalt/8 p-3 transition-colors hover:bg-cobalt/12">
+              <BookOpen className="size-4 text-cobalt" aria-hidden="true" />
+              <p className="mt-3 text-sm font-semibold text-foreground">{BREIGHT.professionalSuite.manual.title}</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Une méthode à transmettre.</p>
+            </Link>
+          </div>
+        </section>
 
         {/* Trending Section */}
         <section>
