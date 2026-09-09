@@ -47,12 +47,11 @@ export function HomeClient({ profile }: HomeClientProps) {
       </div>
 
       <header className="mx-auto max-w-lg px-5 pt-10 pb-4 flex items-end justify-between relative z-10">
-        <div className="flex-1">
-          <p className="text-xs text-muted-foreground tracking-widest uppercase font-medium">{greeting}</p>
+        <div className="flex-1 precision-rule">
+          <p className="text-[10px] text-muted-foreground tracking-[0.18em] uppercase font-semibold">{greeting} · calibré pour le vrai</p>
           <h1 className="font-serif text-4xl font-black tracking-tight text-foreground mt-1 leading-tight">
             {firstName}
           </h1>
-          <div className="h-1 w-12 bg-gradient-to-r from-jade via-cobalt to-transparent rounded-full mt-3" aria-hidden="true" />
         </div>
         <Link href="/profile" aria-label="Profil">
           <div className="size-12 rounded-2xl bg-gradient-to-br from-jade to-mauve flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-jade/30 hover:shadow-xl hover:scale-105 transition-all">
@@ -61,7 +60,7 @@ export function HomeClient({ profile }: HomeClientProps) {
         </Link>
       </header>
 
-      <main className="mx-auto max-w-lg px-5 flex flex-col gap-10 mt-8 relative z-10">
+      <main className="precision-grid mx-auto max-w-lg px-5 flex flex-col gap-10 mt-8 relative z-10">
         <section aria-labelledby="quests-heading" className="group">
           <p id="quests-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
             🎯 Challenges d&apos;écoute

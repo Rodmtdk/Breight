@@ -102,7 +102,7 @@ export default function WelcomePage() {
         </section>
 
         {/* ── Stats strip — asymétrique ── */}
-        <section className="border-y border-border/50 bg-gradient-to-r from-jade/3 via-transparent to-mauve/3 py-8 px-5 mb-6">
+        <section className="precision-grid border-y border-border/50 bg-gradient-to-r from-jade/3 via-transparent to-mauve/3 py-8 px-5 mb-6">
           <div className="max-w-lg mx-auto flex items-center justify-around">
             {[
               { value: 'E2E',   label: 'Chiffrement', color: 'text-jade'   },

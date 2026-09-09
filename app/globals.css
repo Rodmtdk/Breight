@@ -160,6 +160,26 @@
 }
 
 @layer utilities {
+  /* ── Precision atelier layer: a quiet technical texture for Breight ── */
+  .precision-grid {
+    background-image: linear-gradient(to right, color-mix(in oklab, var(--foreground) 5%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 5%, transparent) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .precision-rule {
+    position: relative;
+  }
+
+  .precision-rule::after {
+    content: '';
+    display: block;
+    width: 3.5rem;
+    height: 2px;
+    margin-top: 0.75rem;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, var(--jade), var(--cobalt), transparent);
+  }
+
   /* ── Artistic animations ── */
   @keyframes fade-in {
     from {
