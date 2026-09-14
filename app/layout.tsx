@@ -9,7 +9,7 @@ const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono'
 export const metadata: Metadata = {
   title: 'BREIGHT — Écoute profonde, connexion vraie',
   description:
-    "BREIGHT transforme la communication classique en méthode psychologique d'écoute. Messagerie chiffrée E2E, découverte d'amis, empathie en direct.",
+    "BREIGHT est un atelier de connexions authentiques : écoute active, conversations chiffrées E2E et affinités réelles, avec la précision d’un geste maîtrisé.",
   generator: 'v0.app',
   other: {
     'x-version': 'v1.0-production',

@@ -67,9 +67,9 @@ export default function WelcomePage() {
         <section className="flex flex-col items-start px-6 pt-12 pb-16 max-w-lg mx-auto w-full">
 
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-jade/25 bg-jade/6 px-3.5 py-1.5 mb-12 animate-fade-in">
-            <span className="size-2 rounded-full bg-jade animate-pulse" aria-hidden="true" />
-            <span className="text-xs font-medium text-jade tracking-widest">CONNEXIONS AUTHENTIQUES · E2E</span>
+          <div className="inline-flex items-center gap-2 rounded-full border border-jade/40 bg-jade/10 px-4 py-2 mb-12 animate-fade-in shadow-sm shadow-jade/10">
+            <span className="size-1.5 rounded-full bg-jade" aria-hidden="true" />
+            <span className="text-[11px] font-semibold text-jade tracking-[0.12em] uppercase">Connexions authentiques · E2E</span>
           </div>
 
           {/* Hero text — asymétrique Picasso */}
@@ -82,8 +82,8 @@ export default function WelcomePage() {
             </p>
           </div>
 
-          <p className="text-base text-muted-foreground leading-relaxed text-balance mb-12 max-w-[24rem] font-light">
-            BREIGHT réunit des personnes qui veulent vraiment se connaître — grâce à l&apos;écoute active et aux affinités réelles. Une plateforme conçue pour que chaque conversation compte.
+          <p className="text-base text-muted-foreground leading-relaxed text-balance mb-12 max-w-[22rem] font-light">
+            La plateforme où chaque conversation compte vraiment — écoute active, affinités réelles, zéro pub.
           </p>
 
           <div className="flex flex-col gap-3 w-full max-w-xs">
@@ -102,7 +102,7 @@ export default function WelcomePage() {
         </section>
 
         {/* ── Stats strip — asymétrique ── */}
-        <section className="border-y border-border/50 bg-gradient-to-r from-jade/3 via-transparent to-mauve/3 py-8 px-5 mb-6">
+        <section className="precision-grid border-y border-border/50 bg-gradient-to-r from-jade/3 via-transparent to-mauve/3 py-8 px-5 mb-6">
           <div className="max-w-lg mx-auto flex items-center justify-around">
             {[
               { value: 'E2E',   label: 'Chiffrement', color: 'text-jade'   },
@@ -199,8 +199,8 @@ export default function WelcomePage() {
 
         {/* ── Footer ── */}
         <footer className="px-5 py-6 border-t border-border/50 text-center bg-gradient-to-t from-jade/2 to-transparent">
-          <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Breight &mdash; Connexions authentiques, chiffrées de bout en bout
+          <p className="text-xs text-muted-foreground/60 tracking-wide">
+            &copy; {new Date().getFullYear()} BREIGHT &mdash; chiffré E2E · sans pub · gratuit
           </p>
         </footer>
 
