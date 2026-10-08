@@ -1,15 +1,31 @@
 import { betterAuth } from 'better-auth'
 import { pool } from '@/lib/db'
 
+function getAuthBaseURL() {
+  const configuredURL = process.env.BETTER_AUTH_URL?.trim()
+  if (configuredURL) {
+    try {
+      const parsedURL = new URL(configuredURL)
+      if (parsedURL.protocol === 'http:' || parsedURL.protocol === 'https:') {
+        return parsedURL.origin
+      }
+    } catch {
+      // Ignore malformed project values and use the deployment URL below.
+    }
+  }
+
+  const deploymentHost =
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ??
+    process.env.VERCEL_URL ??
+    process.env.V0_RUNTIME_URL
+
+  if (!deploymentHost) return undefined
+  return deploymentHost.startsWith('http') ? deploymentHost : `https://${deploymentHost}`
+}
+
 export const auth = betterAuth({
   database: pool,
-  baseURL:
-    process.env.BETTER_AUTH_URL ??
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : process.env.V0_RUNTIME_URL),
+  baseURL: getAuthBaseURL(),
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
