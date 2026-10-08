@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',           // indispensable pour GitHub Pages
-  basePath: '/<nom-du-repo>', // remplace <nom-du-repo> par le nom exact du repo
-  assetPrefix: '/<nom-du-repo>/',
-
+  // Keep the default server build so App Router route handlers and Vercel Cron work.
   images: {
-    unoptimized: true,        // obligatoire pour export statique
+    unoptimized: true,
   },
 
   typescript: {
