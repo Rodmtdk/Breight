@@ -124,7 +124,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
         setSession(null)
         callIdRef.current = null
         endedRef.current = false
-      }, 1600)
+      }, 4200)
     },
     [cleanupPeer],
   )
@@ -295,6 +295,12 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   const hangup = useCallback(async () => {
     const current = sessionRef.current
     if (!current) return
+    if (current.phase === "ended") {
+      setSession(null)
+      callIdRef.current = null
+      endedRef.current = false
+      return
+    }
     dismissedRef.current = current.callId || dismissedRef.current
     if (current.phase === "incoming" && current.callId) {
       await declineCall(current.callId).catch(() => undefined)

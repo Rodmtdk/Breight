@@ -129,6 +129,12 @@ export function CallStage({
           </>
         ) : null}
 
+        {phase === "ended" ? (
+          <CallButton label="Fermer" tone="ghost" onClick={onHangup}>
+            <PhoneOff className="size-6" />
+          </CallButton>
+        ) : null}
+
         {inCall ? (
           <>
             <CallButton
