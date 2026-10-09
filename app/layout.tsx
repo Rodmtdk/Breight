@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Geist_Mono } from 'next/font/google'
 import { E2EKeySync } from '@/components/e2e-key-sync'
+import { CallProvider } from '@/components/chat/call-provider'
 import './globals.css'
 
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
@@ -33,8 +34,10 @@ export default function RootLayout({
   return (
     <html lang="fr" className="bg-background">
       <body className={`${geistMono.variable} font-sans antialiased`}>
-        <E2EKeySync />
-        {children}
+        <CallProvider>
+          <E2EKeySync />
+          {children}
+        </CallProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

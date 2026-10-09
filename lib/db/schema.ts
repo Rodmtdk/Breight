@@ -129,6 +129,28 @@ export const conversations = pgTable(
   (t) => [unique().on(t.userId1, t.userId2)],
 )
 
+export const calls = pgTable("calls", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  conversationId: text("conversationId").notNull(),
+  callerId: text("callerId").notNull(),
+  calleeId: text("calleeId").notNull(),
+  kind: text("kind").notNull(), // 'audio' | 'video'
+  status: text("status").notNull().default("ringing"), // 'ringing' | 'accepted' | 'declined' | 'ended' | 'missed'
+  offerSdp: text("offerSdp"),
+  answerSdp: text("answerSdp"),
+  callerIce: jsonb("callerIce").$type<IceCandidateJSON[]>().notNull().default([]),
+  calleeIce: jsonb("calleeIce").$type<IceCandidateJSON[]>().notNull().default([]),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+  endedAt: timestamp("endedAt"),
+})
+
+export type IceCandidateJSON = {
+  candidate: string
+  sdpMid: string | null
+  sdpMLineIndex: number | null
+}
+
 export const messages = pgTable("messages", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   conversationId: text("conversationId").notNull(),
