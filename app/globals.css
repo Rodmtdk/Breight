@@ -258,3 +258,149 @@
     filter: blur(12px);
   }
 }
+
+.maplibregl-map {
+  width: 100%;
+  height: 100%;
+}
+
+.maplibregl-popup-content {
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.nava-user-dot {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+.nava-user-dot-core {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid white;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.4);
+}
+
+.nava-user-dot-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #3b82f680;
+  animation: nava-pulse 2.2s ease-out infinite;
+}
+
+@keyframes nava-pulse {
+  0% { transform: scale(0.5); opacity: 0.8; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+.nava-user-vehicle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--background) 88%, transparent);
+  border: 2px solid white;
+}
+
+.nava-user-vehicle-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.nava-dest-pin {
+  width: 26px;
+  height: 26px;
+  background: #f43f5e;
+  border: 3px solid white;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+}
+
+.nava-event-pin {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--nava-event-color, #64748b);
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+.nava-friend-pin {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: var(--jade, #1f8a70);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.35);
+}
+
+.nava-event-popup {
+  padding: 12px 14px;
+  min-width: 180px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+}
+
+.nava-event-popup-desc {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+}
+
+.nava-event-popup-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.nava-event-popup-actions button {
+  flex: 1;
+  border: 1px solid var(--border);
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: oklch(0.16 0.012 255);
+  --foreground: oklch(0.97 0.004 240);
+  --card: oklch(0.21 0.012 255);
+  --card-foreground: oklch(0.97 0.004 240);
+  --popover: oklch(0.21 0.012 255);
+  --popover-foreground: oklch(0.97 0.004 240);
+  --primary: oklch(0.72 0.12 162);
+  --primary-foreground: oklch(0.16 0.02 162);
+  --secondary: oklch(0.27 0.012 255);
+  --secondary-foreground: oklch(0.97 0.004 240);
+  --muted: oklch(0.27 0.012 255);
+  --muted-foreground: oklch(0.72 0.02 255);
+  --accent: oklch(0.27 0.012 255);
+  --accent-foreground: oklch(0.97 0.004 240);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.72 0.12 162);
+  --jade: oklch(0.72 0.12 162);
+  --jade-foreground: oklch(0.16 0.02 162);
+}

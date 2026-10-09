@@ -28,11 +28,10 @@ interface FeedPageClientProps {
 
 export function FeedPageClient({
   items,
-  hasPostedToday,
   windowClosesAt,
 }: FeedPageClientProps) {
   const router = useRouter()
-  const [isModalOpen, setIsModalOpen] = useState(!hasPostedToday)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleMomentSubmit = async (data: { content?: string; mediaUrl?: string }) => {
     await postMoment({
@@ -47,12 +46,8 @@ export function FeedPageClient({
   return (
     <main className="mx-auto flex min-h-svh w-full max-w-md flex-col bg-background pb-20">
       <header className="px-5 pt-8 pb-4">
-        <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">
-          Moments du jour
-        </h1>
-        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-          Des instants vrais, partagés avec tes proches. Les moments éphémères disparaissent après 24h.
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Stories</h1>
+        <p className="mt-1 text-sm text-muted-foreground">24 heures, puis ça disparaît.</p>
       </header>
       <div className="flex flex-col gap-5 px-5">
         <MomentComposer />
