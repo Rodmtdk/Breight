@@ -24,7 +24,7 @@ export function ChatList({
       <div className="flex flex-1 flex-col items-center justify-center gap-3 px-8 text-center">
         <MessageCircle className="size-10 text-muted-foreground" aria-hidden="true" />
         <p className="text-sm leading-relaxed text-muted-foreground">
-          {"Aucune conversation pour l'instant. Trouve des connexions dans l'onglet D\u00e9couverte."}
+          Aucune conversation. Ajoute un ami, puis écris-lui.
         </p>
       </div>
     )

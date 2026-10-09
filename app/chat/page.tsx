@@ -15,9 +15,6 @@ export default async function ChatPage() {
     <main className="mx-auto flex min-h-svh w-full max-w-md flex-col bg-background pb-20">
       <header className="flex items-center justify-between px-5 pt-8 pb-4">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">Messages</h1>
-        <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
-          E2E chiffr&eacute;
-        </span>
       </header>
       <ChatList conversations={conversations} currentUserId={session.user.id} />
       <BottomNav />
