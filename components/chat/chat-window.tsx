@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
 import useSWR from "swr"
-import { ArrowLeft, Lock, Send, Sparkles } from "lucide-react"
+import { ArrowLeft, Lock, Phone, Send, Sparkles, Video } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getConversationInfo, getMessages, sendEncryptedMessage } from "@/app/actions/chat"
@@ -11,6 +11,7 @@ import { decryptMessage, encryptMessage } from "@/lib/crypto"
 import { triggerSensory } from "@/lib/sensory"
 import { getPromptById } from "@/lib/prompts"
 import { PromptDrawer } from "@/components/chat/prompt-drawer"
+import { useCall } from "@/components/chat/call-provider"
 
 interface DecryptedMessage {
   id: string
@@ -28,6 +29,7 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
   const [sending, setSending] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const prevCountRef = useRef(0)
+  const { startCall, busy } = useCall()
 
   const { data: info } = useSWR(["convo-info", conversationId], () => getConversationInfo(conversationId))
 
@@ -122,7 +124,7 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
 
   return (
     <main className="mx-auto flex h-svh w-full max-w-md flex-col bg-background">
-      <header className="flex items-center gap-3 border-b border-border px-4 py-3">
+      <header className="flex items-center gap-2 border-b border-border px-3 py-2.5">
         <Link href="/chat" aria-label="Retour aux messages" className="text-muted-foreground">
           <ArrowLeft className="size-5" />
         </Link>
@@ -134,11 +136,49 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
         </Avatar>
         <div className="flex min-w-0 flex-1 flex-col">
           <span className="truncate text-sm font-medium text-foreground">{info.otherDisplayName}</span>
-          <span className="flex items-center gap-1 text-xs text-muted-foreground">
+          <span className="flex min-w-0 items-center gap-1 truncate text-xs text-muted-foreground">
             <Lock className="size-3" aria-hidden="true" />
             Chiffr&eacute; de bout en bout
           </span>
         </div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="size-11 shrink-0"
+          aria-label={`Appeler ${info.otherDisplayName}`}
+          disabled={busy}
+          onClick={() => {
+            triggerSensory("tap")
+            startCall({
+              conversationId,
+              kind: "audio",
+              peerName: info.otherDisplayName,
+              peerAvatar: info.otherAvatarUrl,
+            })
+          }}
+        >
+          <Phone className="size-4" />
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="size-11 shrink-0"
+          aria-label={`Appel vidéo avec ${info.otherDisplayName}`}
+          disabled={busy}
+          onClick={() => {
+            triggerSensory("tap")
+            startCall({
+              conversationId,
+              kind: "video",
+              peerName: info.otherDisplayName,
+              peerAvatar: info.otherAvatarUrl,
+            })
+          }}
+        >
+          <Video className="size-4" />
+        </Button>
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 py-4">
