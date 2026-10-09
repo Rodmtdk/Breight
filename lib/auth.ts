@@ -35,8 +35,13 @@ export const auth = betterAuth({
     ...(process.env.NODE_ENV === 'development'
       ? ['http://localhost:3000', 'http://localhost:3001']
       : []),
-    // v0 preview — the iframe and the runtime URL must both be trusted
+    // v0 preview — every origin that can serve the dev preview iframe
+    // must be trusted (runtime, durable dev-app, exact build, and direct
+    // sandbox URLs all resolve to the same running server).
     ...(process.env.V0_RUNTIME_URL ? [process.env.V0_RUNTIME_URL] : []),
+    ...(process.env.V0_DEV_APP_URL ? [process.env.V0_DEV_APP_URL] : []),
+    ...(process.env.V0_BUILD_URL ? [process.env.V0_BUILD_URL] : []),
+    ...(process.env.V0_SANDBOX_URL ? [process.env.V0_SANDBOX_URL] : []),
     ...(process.env.V0_CALLBACK_URL ? [process.env.V0_CALLBACK_URL] : []),
     // Vercel deployment URLs
     ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
