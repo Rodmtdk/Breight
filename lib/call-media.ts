@@ -64,7 +64,7 @@ export function mediaErrorMessage(error: unknown, kind: "audio" | "video") {
     return kind === "video" ? "Aucune caméra ou micro détecté sur cet appareil." : "Aucun micro détecté sur cet appareil."
   }
   if (name === "SecurityError" || name === "TypeError") {
-    return "Les appels nécessitent HTTPS et l'accès au micro. Ouvre Breight dans un onglet sécurisé."
+    return "Les appels nécessitent HTTPS et l'accès au micro. Ouvre BR8 dans un onglet sécurisé."
   }
   return "Impossible de démarrer l'appel. Vérifie les permissions du micro puis réessaie."
 }

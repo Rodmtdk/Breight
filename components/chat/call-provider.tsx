@@ -170,18 +170,18 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           setSession((current) => (current ? { ...current, phase: "connected", error: null } : current))
         }
         if (pc.connectionState === "failed") {
-          setSession((current) =>
-            current
-              ? {
-                  ...current,
-                  error: "Connexion impossible. Réessaie, idéalement sur le même réseau Wi-Fi.",
-                }
-              : current,
-          )
+          finish("Connexion impossible. Le réseau bloque peut-être l'appel. Réessaie ou change de réseau.")
+        }
+        if (pc.connectionState === "disconnected") {
+          window.setTimeout(() => {
+            if (pcRef.current === pc && pc.connectionState === "disconnected") {
+              finish("La connexion a été interrompue. Vérifie ton réseau puis réessaie.")
+            }
+          }, 8_000)
         }
       }
     },
-    [],
+    [finish],
   )
 
   const flushPendingIce = useCallback(async (callId: string) => {

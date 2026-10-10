@@ -34,6 +34,7 @@ export function CameraHome({
   const [shot, setShot] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [cameraAttempt, setCameraAttempt] = useState(0)
 
   useEffect(() => {
     let cancelled = false
@@ -71,7 +72,7 @@ export function CameraHome({
       cancelled = true
       streamRef.current?.getTracks().forEach((track) => track.stop())
     }
-  }, [facing])
+  }, [cameraAttempt, facing])
 
   function capture() {
     const video = videoRef.current
@@ -165,8 +166,18 @@ export function CameraHome({
         <div className="absolute inset-x-8 top-1/2 z-10 -translate-y-1/2 rounded-2xl bg-black/70 p-5 text-center backdrop-blur">
           <p className="text-sm font-medium">Caméra indisponible</p>
           <p className="mt-1 text-xs leading-relaxed text-white/70">
-            Autorise la caméra, ou ouvre Stories pour publier une photo.
+            Autorise la caméra pour prendre une photo, ou ouvre Stories pour publier depuis ta galerie.
           </p>
+          <button
+            type="button"
+            onClick={() => {
+              setDenied(false)
+              setCameraAttempt((value) => value + 1)
+            }}
+            className="mt-4 rounded-full bg-white px-4 py-2 text-xs font-semibold text-black"
+          >
+            Réessayer
+          </button>
         </div>
       ) : null}
 
