@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import { E2EKeySync } from '@/components/e2e-key-sync'
+import { SystemLanguage } from '@/components/system-language'
 import { CallProvider } from '@/components/chat/call-provider'
 import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
@@ -36,6 +37,7 @@ export default function RootLayout({
       <body className={`${geistMono.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <CallProvider>
+            <SystemLanguage />
             <E2EKeySync />
             {children}
           </CallProvider>
