@@ -7,6 +7,7 @@ import { ImageIcon, Radio, RefreshCw, Send, Video } from 'lucide-react'
 import { BottomNav } from '@/components/bottom-nav'
 import { postMoment } from '@/app/actions/feed'
 import { triggerSensory } from '@/lib/sensory'
+import { CameraEffects, effectClassName, type CameraEffect } from '@/components/home/camera-effects'
 
 export interface StoryChip {
   id: string
@@ -40,6 +41,9 @@ export function CameraHome({
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [cameraAttempt, setCameraAttempt] = useState(0)
+  const [effect, setEffect] = useState<CameraEffect>('original')
+  const [sticker, setSticker] = useState<string | null>(null)
+  const [caption, setCaption] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -108,7 +112,24 @@ export function CameraHome({
     canvas.height = video.videoHeight || 1280
     const context = canvas.getContext('2d')
     if (!context) return
+    const filterMap: Record<CameraEffect, string> = {
+      original: 'none',
+      warm: 'saturate(1.25) sepia(.18) hue-rotate(-8deg)',
+      cool: 'saturate(1.1) hue-rotate(18deg) brightness(1.05)',
+      mono: 'grayscale(1) contrast(1.1)',
+    }
+    context.filter = filterMap[effect]
     context.drawImage(video, 0, 0, canvas.width, canvas.height)
+    context.filter = 'none'
+    if (caption || sticker) {
+      context.fillStyle = 'rgba(0,0,0,.35)'
+      context.roundRect(canvas.width * .18, canvas.height * .44, canvas.width * .64, canvas.height * .12, 24)
+      context.fill()
+      context.fillStyle = '#fff'
+      context.font = `800 ${Math.max(24, canvas.width * .045)}px sans-serif`
+      context.textAlign = 'center'
+      context.fillText([sticker, caption].filter(Boolean).join(' · '), canvas.width / 2, canvas.height * .51)
+    }
     setShot(canvas.toDataURL('image/jpeg', 0.86))
     setError(null)
     triggerSensory('tap')
@@ -150,7 +171,7 @@ export function CameraHome({
         playsInline
         muted
         autoPlay
-        className="absolute inset-0 size-full object-cover"
+        className={`absolute inset-0 size-full object-cover transition duration-500 ${effectClassName(effect)}`}
         aria-label="Aperçu de la caméra"
       />
       {shot ? (
@@ -218,6 +239,15 @@ export function CameraHome({
           </button>
         </div>
       ) : null}
+
+      <CameraEffects
+        effect={effect}
+        onEffectChange={setEffect}
+        sticker={sticker}
+        onStickerChange={setSticker}
+        caption={caption}
+        onCaptionChange={setCaption}
+      />
 
       {error ? (
         <p className="absolute inset-x-6 bottom-36 z-10 text-center text-xs text-white">{error}</p>
