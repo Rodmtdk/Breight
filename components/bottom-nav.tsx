@@ -19,7 +19,21 @@ export function BottomNav({ unreadCount = 0, overlay = false }: { unreadCount?: 
   const pathname = usePathname()
 
   return (
-    <nav
+    <>
+      <Link
+        href="/profile"
+        aria-label="Ouvrir mon profil"
+        onClick={() => triggerSensory('tap')}
+        className={cn(
+          'fixed left-4 z-[60] grid size-11 place-items-center rounded-full border shadow-xl backdrop-blur-xl transition-transform hover:scale-105 active:scale-95',
+          'top-[max(1rem,env(safe-area-inset-top))]',
+          overlay ? 'border-white/20 bg-black/45 text-white' : 'border-border/70 bg-card/90 text-foreground',
+        )}
+      >
+        <User className="size-5" aria-hidden="true" />
+        <span className="sr-only">Mon profil</span>
+      </Link>
+      <nav
       aria-label="Navigation principale"
       className={cn(
         'fixed bottom-0 inset-x-0 z-50 border-t',
@@ -67,6 +81,7 @@ export function BottomNav({ unreadCount = 0, overlay = false }: { unreadCount?: 
           )
         })}
       </div>
-    </nav>
+      </nav>
+    </>
   )
 }
