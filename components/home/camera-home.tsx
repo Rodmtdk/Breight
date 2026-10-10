@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ImageIcon, RefreshCw, Send, Video } from 'lucide-react'
+import { ImageIcon, Radio, RefreshCw, Send, Video } from 'lucide-react'
 import { BottomNav } from '@/components/bottom-nav'
 import { postMoment } from '@/app/actions/feed'
 import { triggerSensory } from '@/lib/sensory'
@@ -171,6 +171,10 @@ export function CameraHome({
           <Link href="/brief" className="flex shrink-0 items-center gap-2 rounded-full border border-jade/50 bg-jade/15 px-3 py-2 text-xs font-semibold text-white backdrop-blur">
             <span className="grid size-5 place-items-center rounded-full bg-jade text-[10px] text-jade-foreground">B</span>
             Débloquer un sujet
+          </Link>
+          <Link href="/radar" className="flex shrink-0 items-center gap-2 rounded-full border border-cobalt/50 bg-cobalt/15 px-3 py-2 text-xs font-semibold text-white backdrop-blur">
+            <span className="grid size-5 place-items-center rounded-full bg-cobalt text-[10px] text-white"><Radio className="size-3" /></span>
+            Voir le Radar
           </Link>
         </div>
         <div className="pointer-events-auto flex gap-3 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

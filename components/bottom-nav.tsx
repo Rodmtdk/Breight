@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Camera, Map, MessageCircle, Play, User, Users } from 'lucide-react'
+import { Camera, Map, MessageCircle, Play, Radio, User, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { triggerSensory } from '@/lib/sensory'
 
@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: '/', label: 'Caméra', icon: Camera, center: true },
   { href: '/feed', label: 'Stories', icon: Play },
   { href: '/map', label: 'Carte', icon: Map },
+  { href: '/radar', label: 'Radar', icon: Radio },
   { href: '/profile', label: 'Profil', icon: User },
 ]
 
