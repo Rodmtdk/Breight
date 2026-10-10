@@ -1,8 +1,15 @@
 import type { IceCandidateJSON } from "@/lib/db/schema"
 
+const turnUrls = process.env.NEXT_PUBLIC_TURN_URLS?.split(',').map((url) => url.trim()).filter(Boolean) ?? []
+const turnUsername = process.env.NEXT_PUBLIC_TURN_USERNAME
+const turnCredential = process.env.NEXT_PUBLIC_TURN_CREDENTIAL
+
 export const ICE_SERVERS: RTCIceServer[] = [
   { urls: "stun:stun.l.google.com:19302" },
   { urls: "stun:stun1.l.google.com:19302" },
+  ...(turnUrls.length && turnUsername && turnCredential
+    ? [{ urls: turnUrls, username: turnUsername, credential: turnCredential }]
+    : []),
 ]
 
 export function createPeerConnection() {
@@ -56,5 +63,8 @@ export function mediaErrorMessage(error: unknown, kind: "audio" | "video") {
   if (name === "NotFoundError" || name === "OverconstrainedError") {
     return kind === "video" ? "Aucune caméra ou micro détecté sur cet appareil." : "Aucun micro détecté sur cet appareil."
   }
-  return "Impossible de démarrer l'appel."
+  if (name === "SecurityError" || name === "TypeError") {
+    return "Les appels nécessitent HTTPS et l'accès au micro. Ouvre Breight dans un onglet sécurisé."
+  }
+  return "Impossible de démarrer l'appel. Vérifie les permissions du micro puis réessaie."
 }
