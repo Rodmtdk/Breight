@@ -8,6 +8,7 @@ import { EmpathyReport } from '@/components/dashboard/empathy-report'
 import { MoodCheckin } from '@/components/dashboard/mood-checkin'
 import { DailyPrompt } from '@/components/dashboard/daily-prompt'
 import { DailyQuests } from '@/components/dashboard/daily-quests'
+import { RetentionHub } from '@/components/dashboard/retention-hub'
 import { ListeningScoreCard } from '@/components/listening-score-card'
 import { Music, MapPin, StickyNote, Compass, MessageCircle, Camera, ArrowRight } from 'lucide-react'
 
@@ -67,6 +68,8 @@ export function HomeClient({ profile }: HomeClientProps) {
           </p>
           <DailyQuests />
         </section>
+
+        <RetentionHub />
 
         <section aria-labelledby="mood-heading" className="group">
           <p id="mood-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
