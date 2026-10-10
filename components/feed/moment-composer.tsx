@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Camera, Clock, X } from "lucide-react"
+import { Camera, Clock, FileMusic, Film, ImageIcon, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
@@ -14,6 +14,8 @@ export function MomentComposer() {
   const router = useRouter()
   const fileRef = useRef<HTMLInputElement>(null)
   const [content, setContent] = useState("")
+  const [category, setCategory] = useState("daily")
+  const [mood, setMood] = useState("")
   const [file, setFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [ephemeral, setEphemeral] = useState(true)
@@ -43,9 +45,11 @@ export function MomentComposer() {
         }
         mediaPathname = json.pathname
       }
+      const moodLine = mood.trim() ? `mood::${mood.trim()}` : ""
       await postMoment({
-        content: content.trim() || undefined,
+        content: [moodLine, content.trim()].filter(Boolean).join("\n\n") || undefined,
         mediaUrl: mediaPathname,
+        feedType: category,
         ephemeral,
       })
       triggerSensory("milestone")
@@ -59,6 +63,12 @@ export function MomentComposer() {
 
   return (
     <section className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {[['daily', 'Daily'], ['offer', 'Offre'], ['sale', 'À vendre'], ['job', 'Emploi']].map(([value, label]) => (
+          <button key={value} type="button" onClick={() => setCategory(value)} className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold ${category === value ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>{label}</button>
+        ))}
+      </div>
+      <input value={mood} onChange={(event) => setMood(event.target.value)} placeholder="Ton mood du moment..." aria-label="Mood du moment" className="h-10 rounded-xl border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring" />
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
@@ -85,7 +95,7 @@ export function MomentComposer() {
       <input
         ref={fileRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/gif"
+        accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,audio/mpeg,audio/mp4,audio/wav"
         capture="environment"
         className="sr-only"
         onChange={(e) => handleFileChange(e.target.files?.[0] ?? null)}
@@ -102,8 +112,8 @@ export function MomentComposer() {
             fileRef.current?.click()
           }}
         >
-          <Camera className="size-4" />
-          Photo
+          <ImageIcon className="size-4" />
+          Photo / vidéo / audio
         </Button>
         <div className="flex items-center gap-2">
           <Clock className="size-3.5 text-muted-foreground" aria-hidden="true" />

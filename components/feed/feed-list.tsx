@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Clock, Trash2 } from "lucide-react"
+import { BriefcaseBusiness, Clock, Disc3, HandCoins, Music2, Trash2, Video } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { deleteMoment } from "@/app/actions/feed"
 import { triggerSensory } from "@/lib/sensory"
@@ -49,6 +49,10 @@ export function FeedList({ items }: { items: FeedItem[] }) {
         <li key={item.id}>
           <article className="overflow-hidden rounded-2xl border border-border bg-card">
             <div className="flex items-center gap-3 px-4 py-3">
+              <span className="flex items-center gap-1 rounded-full bg-secondary px-2 py-1 text-[10px] font-semibold text-secondary-foreground">
+                {item.feedType === 'job' ? <BriefcaseBusiness className="size-3" /> : item.feedType === 'sale' ? <HandCoins className="size-3" /> : item.feedType === 'offer' ? <Disc3 className="size-3" /> : <span>●</span>}
+                {item.feedType === 'job' ? 'Emploi' : item.feedType === 'sale' ? 'À vendre' : item.feedType === 'offer' ? 'Offre' : 'Daily'}
+              </span>
               <Avatar className="size-9">
                 <AvatarImage src={item.authorAvatar ?? undefined} alt="" />
                 <AvatarFallback className="bg-secondary text-xs font-medium text-secondary-foreground">
@@ -84,16 +88,16 @@ export function FeedList({ items }: { items: FeedItem[] }) {
               ) : null}
             </div>
             {item.mediaUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={`/api/file?pathname=${encodeURIComponent(item.mediaUrl)}`}
-                alt={item.content ?? "Moment partag\u00e9"}
-                className="max-h-96 w-full object-cover"
-              />
+              item.mediaUrl.match(/\.(mp4|webm|mov)$/i) ? (
+                <video src={`/api/file?pathname=${encodeURIComponent(item.mediaUrl)}`} controls playsInline className="max-h-96 w-full bg-black object-cover" aria-label="Vidéo publiée" />
+              ) : item.mediaUrl.match(/\.(mp3|wav|m4a|aac)$/i) ? (
+                <div className="flex items-center gap-3 bg-gradient-to-r from-primary/15 to-accent/20 px-4 py-5"><Music2 className="size-5" /><audio src={`/api/file?pathname=${encodeURIComponent(item.mediaUrl)}`} controls className="min-w-0 flex-1" /></div>
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={`/api/file?pathname=${encodeURIComponent(item.mediaUrl)}`} alt={item.content ?? "Moment partagé"} className="max-h-96 w-full object-cover" />
+              )
             ) : null}
-            {item.content ? (
-              <p className="px-4 py-3 text-sm leading-relaxed text-card-foreground">{item.content}</p>
-            ) : null}
+            {item.content ? (() => { const [first, ...rest] = item.content.split('\n\n'); const mood = first.startsWith('mood::') ? first.slice(6) : null; const body = mood ? rest.join('\n\n') : item.content; return <div className="px-4 py-3">{mood ? <span className="mb-2 inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">{mood}</span> : null}<p className="text-sm leading-relaxed text-card-foreground">{body}</p></div> })() : null}
           </article>
         </li>
       ))}

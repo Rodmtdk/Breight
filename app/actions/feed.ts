@@ -62,6 +62,7 @@ export async function getFeed() {
 export async function postMoment(data: {
   content?: string
   mediaUrl?: string
+  feedType?: string
   ephemeral?: boolean
 }) {
   const userId = await getUserId()
@@ -69,7 +70,7 @@ export async function postMoment(data: {
     userId,
     content: data.content ?? null,
     mediaUrl: data.mediaUrl ?? null,
-    feedType: data.mediaUrl ? "moment" : "status",
+    feedType: data.feedType ?? (data.mediaUrl ? "moment" : "status"),
     expiresAt: data.ephemeral ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null,
   })
   

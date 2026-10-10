@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ImageIcon, RefreshCw, Send, User } from 'lucide-react'
+import { ImageIcon, RefreshCw, Send, User, Video } from 'lucide-react'
 import { BottomNav } from '@/components/bottom-nav'
 import { postMoment } from '@/app/actions/feed'
 import { triggerSensory } from '@/lib/sensory'
@@ -28,6 +28,11 @@ export function CameraHome({
   const router = useRouter()
   const videoRef = useRef<HTMLVideoElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
+  const recorderRef = useRef<MediaRecorder | null>(null)
+  const chunksRef = useRef<Blob[]>([])
+  const [videoMode, setVideoMode] = useState(false)
+  const [recording, setRecording] = useState(false)
+  const [recordedVideo, setRecordedVideo] = useState<Blob | null>(null)
   const [facing, setFacing] = useState<'user' | 'environment'>('environment')
   const [ready, setReady] = useState(false)
   const [denied, setDenied] = useState(false)
@@ -77,6 +82,27 @@ export function CameraHome({
   function capture() {
     const video = videoRef.current
     if (!video || !ready) return
+    if (videoMode) {
+      if (recording) {
+        recorderRef.current?.stop()
+        setRecording(false)
+        return
+      }
+      const stream = streamRef.current
+      if (!stream || !('MediaRecorder' in window)) {
+        setError('La vidéo n’est pas disponible sur cet appareil.')
+        return
+      }
+      chunksRef.current = []
+      const recorder = new MediaRecorder(stream)
+      recorder.ondataavailable = (event) => event.data.size && chunksRef.current.push(event.data)
+      recorder.onstop = () => setRecordedVideo(new Blob(chunksRef.current, { type: recorder.mimeType || 'video/webm' }))
+      recorder.start()
+      recorderRef.current = recorder
+      setRecording(true)
+      window.setTimeout(() => recorder.state === 'recording' && recorder.stop(), 15000)
+      return
+    }
     const canvas = document.createElement('canvas')
     canvas.width = video.videoWidth || 720
     canvas.height = video.videoHeight || 1280
@@ -89,12 +115,12 @@ export function CameraHome({
   }
 
   async function sendStory() {
-    if (!shot || busy) return
+    if ((!shot && !recordedVideo) || busy) return
     setBusy(true)
     setError(null)
     try {
-      const blob = await (await fetch(shot)).blob()
-      const file = new File([blob], 'story.jpg', { type: 'image/jpeg' })
+      const blob = recordedVideo ?? await (await fetch(shot!)).blob()
+      const file = new File([blob], recordedVideo ? 'story.webm' : 'story.jpg', { type: blob.type || 'image/jpeg' })
       const formData = new FormData()
       formData.append('file', file)
       const upload = await fetch('/api/upload', { method: 'POST', body: formData })
@@ -106,6 +132,8 @@ export function CameraHome({
       await postMoment({ mediaUrl: json.pathname, ephemeral: true })
       triggerSensory('milestone')
       setShot(null)
+      setRecordedVideo(null)
+      setVideoMode(false)
       router.push('/feed')
       router.refresh()
     } catch {
@@ -128,7 +156,7 @@ export function CameraHome({
       {shot ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={shot} alt="Photo prise" className="absolute inset-0 size-full object-cover" />
-      ) : null}
+      ) : recordedVideo ? <video src={URL.createObjectURL(recordedVideo)} autoPlay muted loop playsInline className="absolute inset-0 size-full object-cover" aria-label="Vidéo enregistrée" /> : null}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/70" />
       <div className="pointer-events-none absolute right-4 top-32 z-[1] hidden w-28 overflow-hidden rounded-3xl border border-white/20 bg-black/20 shadow-2xl backdrop-blur sm:block">
         <img src="/br8-avatar-art.png" alt="" className="w-[180%] max-w-none translate-x-[-28%]" />
@@ -203,7 +231,7 @@ export function CameraHome({
           <ImageIcon className="size-5" />
         </Link>
 
-        {shot ? (
+        {shot || recordedVideo ? (
           <button
             type="button"
             onClick={() => void sendStory()}
@@ -225,13 +253,16 @@ export function CameraHome({
           </button>
         )}
 
+        <button type="button" onClick={() => setVideoMode((value) => !value)} aria-label="Mode vidéo" className={`grid size-12 place-items-center rounded-2xl backdrop-blur ${videoMode ? 'bg-primary text-primary-foreground' : 'bg-white/15'}`}>
+          <Video className="size-5" />
+        </button>
         <button
           type="button"
           onClick={() => {
-            if (shot) setShot(null)
+            if (shot || recordedVideo) { setShot(null); setRecordedVideo(null) }
             else setFacing((current) => (current === 'environment' ? 'user' : 'environment'))
           }}
-          aria-label={shot ? 'Reprendre' : 'Changer de caméra'}
+          aria-label={shot || recordedVideo ? 'Reprendre' : 'Changer de caméra'}
           className="grid size-12 place-items-center rounded-2xl bg-white/15 backdrop-blur"
         >
           <RefreshCw className="size-5" />
