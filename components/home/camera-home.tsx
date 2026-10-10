@@ -142,6 +142,12 @@ export function CameraHome({
             <User className="size-3.5" aria-hidden="true" />
           </Link>
         </div>
+        <div className="pointer-events-auto mb-3 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <Link href="/brief" className="flex shrink-0 items-center gap-2 rounded-full border border-jade/50 bg-jade/15 px-3 py-2 text-xs font-semibold text-white backdrop-blur">
+            <span className="grid size-5 place-items-center rounded-full bg-jade text-[10px] text-jade-foreground">B</span>
+            Débloquer un sujet
+          </Link>
+        </div>
         <div className="pointer-events-auto flex gap-3 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Link href="/feed" className="flex w-16 shrink-0 flex-col items-center gap-1">
             <span className="grid size-14 place-items-center rounded-full border-2 border-white/80 bg-white/10 text-lg font-semibold">

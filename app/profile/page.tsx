@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+import Link from "next/link"
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 import { getMyProfile } from "@/app/actions/profile"
@@ -37,6 +38,10 @@ export default async function ProfilePage() {
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">Gère tes informations, ta visibilité et les personnes avec qui tu échanges.</p>
       </header>
       <div className="flex flex-col gap-4 px-5">
+        <Link href="/brief" className="flex items-center justify-between rounded-2xl border border-jade/30 bg-jade/10 px-4 py-3 text-sm transition-colors hover:bg-jade/15">
+          <span><span className="block font-semibold text-foreground">BR8 Brief</span><span className="block text-xs text-muted-foreground">Demande ou propose une compétence</span></span>
+          <span className="rounded-full bg-jade px-3 py-1 text-xs font-semibold text-jade-foreground">Ouvrir</span>
+        </Link>
         <ProfileEditor
           initial={
             profile
