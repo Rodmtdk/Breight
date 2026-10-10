@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { BriefcaseBusiness, Clock, Disc3, HandCoins, Music2, Trash2, Video } from "lucide-react"
+import { BriefcaseBusiness, Clock, Disc3, HandCoins, Music2, Trash2 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { deleteMoment } from "@/app/actions/feed"
 import { triggerSensory } from "@/lib/sensory"
@@ -47,7 +47,7 @@ export function FeedList({ items }: { items: FeedItem[] }) {
     <ul className="flex flex-col gap-4">
       {items.map((item) => (
         <li key={item.id}>
-          <article className="overflow-hidden rounded-2xl border border-border bg-card">
+          <article className="overflow-hidden rounded-3xl border border-border/70 bg-card shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_12px_38px_rgba(0,0,0,0.1)]">
             <div className="flex items-center gap-3 px-4 py-3">
               <span className="flex items-center gap-1 rounded-full bg-secondary px-2 py-1 text-[10px] font-semibold text-secondary-foreground">
                 {item.feedType === 'job' ? <BriefcaseBusiness className="size-3" /> : item.feedType === 'sale' ? <HandCoins className="size-3" /> : item.feedType === 'offer' ? <Disc3 className="size-3" /> : <span>●</span>}
