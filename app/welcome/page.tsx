@@ -13,7 +13,7 @@ export default function WelcomePage() {
   return (
     <main className="mx-auto flex min-h-svh w-full max-w-lg flex-col bg-background px-5 py-8">
       <div className="flex items-center justify-between">
-        <p className="text-sm font-black tracking-[0.22em] text-foreground">BR8</p>
+        <div className="flex items-center gap-2 text-sm font-black tracking-[0.22em] text-foreground"><span className="grid size-5 place-items-center rounded-full bg-gold text-[10px] text-background">B</span><span>breight</span></div>
         <span className="rounded-full border border-jade/25 bg-jade/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-jade">Simple. Direct. Vivant.</span>
       </div>
       <div className="relative mt-10 overflow-hidden rounded-[2rem] border border-border/70 bg-gradient-to-br from-cobalt/20 via-card to-jade/10 p-6">
@@ -33,7 +33,7 @@ export default function WelcomePage() {
 
       <ul className="mt-8 grid grid-cols-2 gap-3">
         {POINTS.map(({ icon: Icon, label, text }) => (
-          <li key={label} className="rounded-2xl border border-border bg-card p-4">
+          <li key={label} className="rounded-2xl border border-border/80 bg-card/70 p-4 shadow-sm">
             <Icon className="size-5 text-jade" aria-hidden="true" />
             <p className="mt-3 text-sm font-semibold text-foreground">{label}</p>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{text}</p>

@@ -51,6 +51,7 @@ export function HomeClient({ profile }: HomeClientProps) {
 
       <header className="mx-auto max-w-lg px-5 pt-10 pb-4 flex items-end justify-between relative z-10">
         <div className="flex-1 precision-rule">
+          <div className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-foreground/80"><span className="grid size-4 place-items-center rounded-full bg-gold text-[8px] text-background">B</span><span>breight</span></div>
           <p className="text-[10px] text-muted-foreground tracking-[0.18em] uppercase font-semibold">{greeting} · calibré pour le vrai</p>
           <h1 className="font-serif text-4xl font-black tracking-tight text-foreground mt-1 leading-tight">
             {firstName}
@@ -65,7 +66,7 @@ export function HomeClient({ profile }: HomeClientProps) {
 
       <main className="precision-grid mx-auto max-w-lg px-5 flex flex-col gap-10 mt-8 relative z-10">
         <section aria-labelledby="quests-heading" className="group">
-          <p id="quests-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+          <p id="quests-heading" className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3 group-hover:text-muted-foreground transition-colors">
             🎯 Challenges d&apos;écoute
           </p>
           <DailyQuests />
@@ -74,21 +75,21 @@ export function HomeClient({ profile }: HomeClientProps) {
         <RetentionHub />
 
         <section aria-labelledby="mood-heading" className="group">
-          <p id="mood-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+          <p id="mood-heading" className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3 group-hover:text-muted-foreground transition-colors">
             ✨ Ton humeur aujourd&apos;hui
           </p>
           <MoodCheckin />
         </section>
 
         <section aria-labelledby="prompt-heading" className="group">
-          <p id="prompt-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+          <p id="prompt-heading" className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3 group-hover:text-muted-foreground transition-colors">
             💭 Pour briser la glace
           </p>
           <DailyPrompt />
         </section>
 
         <section aria-labelledby="actions-heading" className="group">
-          <p id="actions-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+          <p id="actions-heading" className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3 group-hover:text-muted-foreground transition-colors">
             🚀 Explore
           </p>
           <div className="grid grid-cols-2 gap-3">
@@ -104,7 +105,7 @@ export function HomeClient({ profile }: HomeClientProps) {
         </section>
 
         <section aria-labelledby="score-heading" className="group">
-          <p id="score-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">
+          <p id="score-heading" className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3 group-hover:text-muted-foreground transition-colors">
             👂 Ton score d&apos;écoute
           </p>
           <div className="space-y-4">
