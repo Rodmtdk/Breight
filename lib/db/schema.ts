@@ -62,7 +62,26 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updatedAt").defaultNow(),
 })
 
-// ---------- BREIGHT app tables ----------
+// ---------- BR8 app tables ----------
+
+export const publicProfilePages = pgTable("public_profile_pages", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  ownerUserId: text("owner_user_id").notNull(),
+  slug: text("slug").notNull().unique(),
+  pageType: text("page_type").notNull().default("project"),
+  name: text("name").notNull(),
+  tagline: text("tagline"),
+  description: text("description"),
+  logoUrl: text("logo_url"),
+  coverUrl: text("cover_url"),
+  location: text("location"),
+  websiteUrl: text("website_url"),
+  contactEmail: text("contact_email"),
+  highlights: text("highlights").array().default([]),
+  isPublished: boolean("is_published").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+})
 
 export const profiles = pgTable("profiles", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
