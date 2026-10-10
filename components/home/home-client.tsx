@@ -10,17 +10,13 @@ import { DailyPrompt } from '@/components/dashboard/daily-prompt'
 import { DailyQuests } from '@/components/dashboard/daily-quests'
 import { RetentionHub } from '@/components/dashboard/retention-hub'
 import { ListeningScoreCard } from '@/components/listening-score-card'
-import { Music, MapPin, StickyNote, Compass, MessageCircle, Camera, ArrowRight, FolderOpen, Users } from 'lucide-react'
+import { Music, MessageCircle, ArrowRight, FolderOpen, Users } from 'lucide-react'
 
 const QUICK_ACTIONS = [
-  { href: '/discover',  icon: Compass,       label: 'Découvrir',  desc: 'Affinités réelles', accent: 'jade'   },
-  { href: '/chat',      icon: MessageCircle, label: 'Messages',   desc: 'Conversations',     accent: 'cobalt' },
-  { href: '/feed',      icon: Camera,        label: 'Moments',    desc: 'Quotidien',         accent: 'mauve' },
-  { href: '/music',     icon: Music,         label: 'Musique',    desc: 'Ce que tu écoutes', accent: 'gold'   },
-  { href: '/map',       icon: MapPin,        label: 'Carte',      desc: 'Connexions près',   accent: 'ruby'   },
-  { href: '/notes',     icon: StickyNote,    label: 'Notes',      desc: 'Souvenirs',         accent: 'mauve'  },
-  { href: '/community', icon: Users,         label: 'Familleo',    desc: 'Événements',         accent: 'jade'   },
-  { href: '/files',     icon: FolderOpen,    label: 'Fichiers',   desc: 'Workspace ERP',      accent: 'cobalt' },
+  { href: '/chat',      icon: MessageCircle, label: 'Messages',  desc: 'Conversations',     accent: 'cobalt' },
+  { href: '/music',     icon: Music,         label: 'Musique',   desc: 'Ce que tu écoutes', accent: 'gold'   },
+  { href: '/community', icon: Users,         label: 'Familleo',  desc: 'Événements',        accent: 'jade'   },
+  { href: '/files',     icon: FolderOpen,    label: 'Fichiers',  desc: 'Workspace ERP',     accent: 'cobalt' },
 ]
 
 const ACCENT: Record<string, { bg: string; icon: string; gradBg: string }> = {
@@ -49,19 +45,14 @@ export function HomeClient({ profile }: HomeClientProps) {
         <div className="absolute -bottom-32 left-1/4 w-72 h-72 bg-gradient-to-tr from-mauve/4 to-transparent rounded-full blur-3xl" style={{ animationDelay: '1s' }} aria-hidden="true" />
       </div>
 
-      <header className="mx-auto max-w-lg px-5 pt-10 pb-4 flex items-end justify-between relative z-10">
-        <div className="flex-1 precision-rule">
+      <header className="mx-auto max-w-lg px-5 pt-24 pb-4 relative z-10">
+        <div className="precision-rule">
           <div className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-foreground/80"><span className="grid size-4 place-items-center rounded-full bg-gold text-[8px] text-background">B</span><span>breight</span></div>
           <p className="text-[10px] text-muted-foreground tracking-[0.18em] uppercase font-semibold">{greeting} · calibré pour le vrai</p>
           <h1 className="font-serif text-4xl font-black tracking-tight text-foreground mt-1 leading-tight">
             {firstName}
           </h1>
         </div>
-        <Link href="/profile" aria-label="Profil">
-          <div className="size-12 rounded-2xl bg-gradient-to-br from-jade to-mauve flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-jade/30 hover:shadow-xl hover:scale-105 transition-all">
-            {firstName[0]?.toUpperCase()}
-          </div>
-        </Link>
       </header>
 
       <main className="precision-grid mx-auto max-w-lg px-5 flex flex-col gap-10 mt-8 relative z-10">
