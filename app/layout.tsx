@@ -13,11 +13,13 @@ export const metadata: Metadata = {
   title: 'BR8',
   description: 'BR8 : caméra, stories, messages, amis et appels vidéo dans une interface simple.',
   generator: 'v0.app',
+  applicationName: 'BR8',
+  keywords: ['BR8', 'communauté', 'projets', 'entreprises', 'annonces', 'stories'],
 }
 
 export const viewport: Viewport = {
   colorScheme: 'dark light',
-  themeColor: '#111111',
+  themeColor: '#0b0d16',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,

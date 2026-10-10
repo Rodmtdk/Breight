@@ -30,7 +30,7 @@ export function PublicPageEditor() {
   }
 
   return <section className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-5">
-    <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-jade">BR8 Pages</p><h2 className="mt-1 text-lg font-semibold">Créer une page publique</h2><p className="mt-1 text-sm text-muted-foreground">Présente ton activité comme un mini-site partageable.</p></div>
+    <div><p className="text-xs font-bold uppercase tracking-[0.18em] text-jade">BR8 Pages</p><h2 className="mt-1 text-lg font-semibold">Créer ta présence publique BR8</h2><p className="mt-1 text-sm text-muted-foreground">Présente ton activité comme un mini-site partageable.</p></div>
     <div className="grid grid-cols-2 gap-2">{([["project", "Projet"], ["company", "Entreprise"]] as const).map(([value, label]) => <button key={value} type="button" onClick={() => setPageType(value)} className={`rounded-2xl border px-3 py-3 text-sm font-semibold ${pageType === value ? "border-jade bg-jade/10 text-foreground" : "border-border text-muted-foreground"}`}>{label}</button>)}</div>
     <div className="grid gap-3 sm:grid-cols-2"><div><Label htmlFor="page-name">Nom</Label><Input id="page-name" value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="103 Diablo ou Pizzalena" /></div><div><Label htmlFor="page-slug">Adresse BR8</Label><Input id="page-slug" value={form.slug} onChange={(e) => update("slug", e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "-"))} placeholder="103-diablo" /></div></div>
     <div><Label htmlFor="page-tagline">Phrase d&apos;accroche</Label><Input id="page-tagline" value={form.tagline} onChange={(e) => update("tagline", e.target.value)} placeholder="La pizza qui rassemble le quartier" /></div>
