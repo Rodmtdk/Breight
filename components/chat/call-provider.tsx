@@ -367,6 +367,16 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   }, [applyRemoteIce, finish, session?.callId, session?.phase])
 
   useEffect(() => {
+    if (!session || !["outgoing", "connecting"].includes(session.phase)) return
+    const timer = window.setTimeout(() => {
+      if (sessionRef.current?.phase === "outgoing" || sessionRef.current?.phase === "connecting") {
+        finish("La connexion n'a pas abouti. Vérifie que l'autre personne a accepté et que les deux appareils autorisent le micro.")
+      }
+    }, 20_000)
+    return () => window.clearTimeout(timer)
+  }, [finish, session])
+
+  useEffect(() => {
     if (session?.phase !== "connected") return
     const timer = window.setInterval(() => {
       if (!connectedAtRef.current) return

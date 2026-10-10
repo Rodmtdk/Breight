@@ -9,14 +9,16 @@ export default async function MapPage() {
   if (!session?.user) redirect('/sign-in')
 
   const data = await getSharedLocations()
-  const friends = data.others
-    .filter((friend) => Number.isFinite(friend.latitude) && Number.isFinite(friend.longitude))
-    .map((friend) => ({
+  const friends = data.others.flatMap((friend) => {
+    if (friend.latitude == null || friend.longitude == null) return []
+    if (!Number.isFinite(friend.latitude) || !Number.isFinite(friend.longitude)) return []
+    return [{
       id: friend.displayName,
       name: friend.displayName,
       lat: friend.latitude,
       lng: friend.longitude,
-    }))
+    }]
+  })
 
   return <NavaApp friends={friends} />
 }

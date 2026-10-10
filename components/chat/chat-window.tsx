@@ -128,19 +128,21 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
         <Link href="/chat" aria-label="Retour aux messages" className="text-muted-foreground">
           <ArrowLeft className="size-5" />
         </Link>
-        <Avatar className="size-9">
-          <AvatarImage src={info.otherAvatarUrl ?? undefined} alt="" />
-          <AvatarFallback className="bg-secondary text-xs font-medium text-secondary-foreground">
-            {info.otherDisplayName.slice(0, 2).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-        <div className="flex min-w-0 flex-1 flex-col">
+        <Link href={`/profile/${info.otherUserId}`} aria-label={`Voir le profil de ${info.otherDisplayName}`}>
+          <Avatar className="size-9">
+            <AvatarImage src={info.otherAvatarUrl ?? undefined} alt="" />
+            <AvatarFallback className="bg-secondary text-xs font-medium text-secondary-foreground">
+              {info.otherDisplayName.slice(0, 2).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        </Link>
+        <Link href={`/profile/${info.otherUserId}`} className="flex min-w-0 flex-1 flex-col">
           <span className="truncate text-sm font-medium text-foreground">{info.otherDisplayName}</span>
           <span className="flex min-w-0 items-center gap-1 truncate text-xs text-muted-foreground">
             <Lock className="size-3" aria-hidden="true" />
             Chiffr&eacute; de bout en bout
           </span>
-        </div>
+        </Link>
         <Button
           type="button"
           variant="ghost"

@@ -25,6 +25,13 @@ export async function getMyProfile() {
   return rows[0] ?? null
 }
 
+export async function getPublicProfile(userId: string) {
+  const rows = await db.select().from(profiles).where(eq(profiles.userId, userId)).limit(1)
+  const profile = rows[0]
+  if (!profile || !profile.isDiscoverable) return null
+  return profile
+}
+
 export async function upsertProfile(data: {
   displayName: string
   bio?: string
