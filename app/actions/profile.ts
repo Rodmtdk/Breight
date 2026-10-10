@@ -3,7 +3,7 @@
 
 import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { profiles, auditLogs } from "@/lib/db/schema"
+import { profiles, auditLogs, publicProfilePages } from "@/lib/db/schema"
 import { eq } from "drizzle-orm"
 import { headers } from "next/headers"
 import { revalidatePath } from "next/cache"
@@ -23,6 +23,38 @@ export async function getMyProfile() {
   const userId = await getUserId()
   const rows = await db.select().from(profiles).where(eq(profiles.userId, userId)).limit(1)
   return rows[0] ?? null
+}
+
+export async function createPublicPage(data: {
+  pageType: "company" | "project"
+  name: string
+  slug: string
+  tagline?: string
+  description?: string
+  location?: string
+  websiteUrl?: string
+  contactEmail?: string
+  highlights?: string[]
+}) {
+  const userId = await getUserId()
+  const slug = data.slug.trim().toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "")
+  if (!slug || !data.name.trim()) throw new Error("Nom et adresse requis")
+  const existing = await db.select({ id: publicProfilePages.id }).from(publicProfilePages).where(eq(publicProfilePages.slug, slug)).limit(1)
+  if (existing.length) throw new Error("Cette adresse BR8 est déjà utilisée")
+  const [page] = await db.insert(publicProfilePages).values({
+    ownerUserId: userId,
+    slug,
+    pageType: data.pageType,
+    name: data.name.trim(),
+    tagline: data.tagline?.trim() || null,
+    description: data.description?.trim() || null,
+    location: data.location?.trim() || null,
+    websiteUrl: data.websiteUrl?.trim() || null,
+    contactEmail: data.contactEmail?.trim() || null,
+    highlights: data.highlights ?? [],
+  }).returning()
+  revalidatePath("/profile")
+  return page
 }
 
 export async function getPublicProfile(userId: string) {

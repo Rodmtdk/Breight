@@ -3,6 +3,7 @@ import Link from "next/link"
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 import { getMyProfile } from "@/app/actions/profile"
+import { PublicPageEditor } from "@/components/profile/public-page-editor"
 import { getMyConnections } from "@/app/actions/discovery"
 import { BottomNav } from "@/components/bottom-nav"
 import { ProfileEditor } from "@/components/profile/profile-editor"
@@ -42,6 +43,7 @@ export default async function ProfilePage() {
           <span><span className="block font-semibold text-foreground">BR8 Brief</span><span className="block text-xs text-muted-foreground">Demande ou propose une compétence</span></span>
           <span className="rounded-full bg-jade px-3 py-1 text-xs font-semibold text-jade-foreground">Ouvrir</span>
         </Link>
+        <PublicPageEditor />
         <ProfileEditor
           initial={
             profile
