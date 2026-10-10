@@ -39,9 +39,10 @@ export async function getCurrentPassage() {
     return null
   }
 
+  const { level: _requirementLevel, ...requirements } = RITUAL_REQUIREMENTS[current.level]
   return {
     level: current.level,
-    ...RITUAL_REQUIREMENTS[current.level],
+    ...requirements,
   }
 }
 

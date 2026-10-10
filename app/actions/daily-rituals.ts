@@ -39,7 +39,7 @@ export async function getTodayRitual() {
     
     await db.insert(dailyRituals).values({
       userId,
-      date: new Date(today),
+      date: today,
       morningIntention,
     })
 
@@ -120,7 +120,7 @@ export async function getRitualStreak() {
     const checkDate = new Date(today.getTime() - i * 24 * 60 * 60 * 1000)
     const dateStr = checkDate.toISOString().split('T')[0]
     const completion = completions.find(c => 
-      c.date.toISOString().split('T')[0] === dateStr && c.morningCompletedAt
+      String(c.date) === dateStr && c.morningCompletedAt
     )
     
     if (completion) streak++

@@ -32,7 +32,7 @@ export function FollowButton({ userId, initialFollowing = false, size = 'md', va
       onClick={handleToggleFollow}
       disabled={loading}
       variant={isFollowingState ? 'outline' : variant}
-      size={size}
+      size={size === 'md' ? 'default' : size}
       className={cn(
         'gap-2 transition-all',
         isFollowingState && 'bg-jade/10 text-jade border-jade hover:bg-jade/20',
