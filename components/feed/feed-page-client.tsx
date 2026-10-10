@@ -32,6 +32,10 @@ export function FeedPageClient({
 }: FeedPageClientProps) {
   const router = useRouter()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [activeFilter, setActiveFilter] = useState<string>('Tout')
+  const filters: string[] = ['Tout', 'Daily', 'Emploi', 'À vendre']
+  const selectedFilter = String(activeFilter)
+  const filteredItems = selectedFilter === 'Tout' ? items : items.filter((item) => selectedFilter === 'Daily' ? item.feedType === 'daily' || item.feedType === 'status' || item.feedType === 'moment' : selectedFilter === 'Emploi' ? item.feedType === 'job' : item.feedType === 'À vendre' ? String(item.feedType) === 'sale' : false)
 
   const handleMomentSubmit = async (data: { content?: string; mediaUrl?: string }) => {
     await postMoment({
@@ -50,12 +54,12 @@ export function FeedPageClient({
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">Stories</h1>
         <p className="mt-1 text-sm text-muted-foreground">Un fil pour les offres, les ventes et les vrais moments.</p>
         <div className="mt-4 flex gap-2 overflow-x-auto pb-1" aria-label="Types de publications">
-          {['Tout', 'Daily', 'Emploi', 'À vendre'].map((filter) => <span key={filter} className="shrink-0 rounded-full bg-secondary px-3 py-1.5 text-xs font-semibold text-secondary-foreground">{filter}</span>)}
+          {filters.map((filter) => <button key={filter} type="button" onClick={() => setActiveFilter(filter)} aria-pressed={selectedFilter === filter} className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${selectedFilter === filter ? 'bg-foreground text-background' : 'bg-secondary text-secondary-foreground'}`}>{filter}</button>)}
         </div>
       </header>
       <div className="flex flex-col gap-5 px-5">
         <MomentComposer />
-        <FeedList items={items} />
+        <FeedList items={filteredItems} />
       </div>
       <MomentNotificationModal
         isOpen={isModalOpen}

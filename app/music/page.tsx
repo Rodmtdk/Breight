@@ -5,6 +5,7 @@ import { getSharedMusic } from "@/app/actions/feed"
 import { BottomNav } from "@/components/bottom-nav"
 import { MusicSharer } from "@/components/music/music-sharer"
 import { MusicList } from "@/components/music/music-list"
+import { VideoExplorer } from "@/components/music/video-explorer"
 
 export default async function MusicPage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -21,6 +22,7 @@ export default async function MusicPage() {
         </p>
       </header>
       <div className="flex flex-col gap-5 px-5">
+        <VideoExplorer />
         <MusicSharer />
         <MusicList shares={shares} />
       </div>

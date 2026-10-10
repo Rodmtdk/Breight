@@ -34,7 +34,7 @@ export async function generateWeeklyReflection(weekStart: Date) {
   // Sauvegarder la reflection
   await db.insert(weeklyReflections).values({
     userId,
-    weekStart: new Date(weekStart.toISOString().split('T')[0]),
+    weekStart: weekStart.toISOString().split('T')[0],
     narrative,
     stats,
     listeningScore: stats.listeningScore,
@@ -58,7 +58,7 @@ export async function getLatestWeeklyReflection() {
     narrative: reflection[0].narrative,
     stats: reflection[0].stats,
     listeningScore: reflection[0].listeningScore,
-    weekStart: reflection[0].weekStart.toISOString(),
+    weekStart: String(reflection[0].weekStart),
   }
 }
 

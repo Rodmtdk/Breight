@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db'
 import { echoes, messages, conversations } from '@/lib/db/schema'
-import { eq, and, desc } from 'drizzle-orm'
+import { eq, and, desc, or, sql } from 'drizzle-orm'
 import { getUserId } from './profile'
 
 // Quand une réponse crée un echo — le contenu devient visible aux amis
@@ -18,7 +18,7 @@ export async function createEcho(data: {
   const convo = await db.select().from(conversations).where(
     and(
       eq(conversations.id, data.conversationId),
-      (db => db.or(eq(conversations.userId1, userId), eq(conversations.userId2, userId)) as any)
+      or(eq(conversations.userId1, userId), eq(conversations.userId2, userId))
     )
   ).limit(1)
   
@@ -56,7 +56,7 @@ export async function getMyEchoes() {
 // Liker un echo (montrer de l'appréciation)
 export async function likeEcho(echoId: string) {
   await db.update(echoes)
-    .set({ likeCount: (db => db.sql`${echoes.likeCount} + 1` as any) })
+    .set({ likeCount: sql`${echoes.likeCount} + 1` })
     .where(eq(echoes.id, echoId))
   
   return { ok: true }

@@ -61,13 +61,14 @@ export default async function RarityPage() {
       <div className="flex flex-col gap-3 px-5">
         {RARITY_FEATURES.map((feature) => {
           const Icon = feature.icon
-          const colorClass = {
+          const colorClasses: Record<string, string> = {
             jade: 'from-jade/10 to-jade/5 border-jade/20',
             cobalt: 'from-cobalt/10 to-cobalt/5 border-cobalt/20',
             mauve: 'from-mauve/10 to-mauve/5 border-mauve/20',
             gold: 'from-gold/10 to-gold/5 border-gold/20',
             ruby: 'from-ruby/10 to-ruby/5 border-ruby/20',
-          }[feature.color as keyof typeof colorClass]
+          }
+          const colorClass = colorClasses[feature.color] ?? colorClasses.jade
 
           return (
             <Link

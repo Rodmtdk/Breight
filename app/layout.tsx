@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import { E2EKeySync } from '@/components/e2e-key-sync'
+import { SystemLanguage } from '@/components/system-language'
 import { CallProvider } from '@/components/chat/call-provider'
 import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
@@ -13,11 +14,13 @@ export const metadata: Metadata = {
   title: 'BR8',
   description: 'BR8 : caméra, stories, messages, amis et appels vidéo dans une interface simple.',
   generator: 'v0.app',
+  applicationName: 'BR8',
+  keywords: ['BR8', 'communauté', 'projets', 'entreprises', 'annonces', 'stories'],
 }
 
 export const viewport: Viewport = {
   colorScheme: 'dark light',
-  themeColor: '#111111',
+  themeColor: '#242538',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -34,6 +37,7 @@ export default function RootLayout({
       <body className={`${geistMono.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <CallProvider>
+            <SystemLanguage />
             <E2EKeySync />
             {children}
           </CallProvider>

@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Camera, Map, MessageCircle, Play, User, Users } from 'lucide-react'
+import { Camera, FolderOpen, Map, MessageCircle, Play, Radio, User, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { triggerSensory } from '@/lib/sensory'
+import { Br8DynamicIsland } from '@/components/br8-dynamic-island'
 
 const NAV_ITEMS = [
   { href: '/chat', label: 'Messages', icon: MessageCircle, badge: true },
@@ -12,6 +13,7 @@ const NAV_ITEMS = [
   { href: '/', label: 'Caméra', icon: Camera, center: true },
   { href: '/feed', label: 'Stories', icon: Play },
   { href: '/map', label: 'Carte', icon: Map },
+  { href: '/radar', label: 'Radar', icon: Radio },
   { href: '/profile', label: 'Profil', icon: User },
 ]
 
@@ -19,16 +21,18 @@ export function BottomNav({ unreadCount = 0, overlay = false }: { unreadCount?: 
   const pathname = usePathname()
 
   return (
-    <nav
+    <>
+      <Br8DynamicIsland overlay={overlay} unreadCount={unreadCount} />
+      <nav
       aria-label="Navigation principale"
       className={cn(
-        'fixed bottom-0 inset-x-0 z-50 border-t',
+        'fixed bottom-0 inset-x-0 z-50 border-t shadow-[0_-10px_30px_-24px_currentColor]',
         overlay
           ? 'border-white/10 bg-black/55 text-white backdrop-blur-xl'
           : 'border-border/60 bg-card/96 text-foreground backdrop-blur-xl',
       )}
     >
-      <div className="mx-auto flex max-w-lg items-end justify-between px-1 pt-1.5 pb-[max(0.55rem,env(safe-area-inset-bottom))]">
+      <div className="mx-auto flex max-w-2xl items-end justify-between gap-0.5 px-1.5 pt-1.5 pb-[max(0.55rem,env(safe-area-inset-bottom))]">
         {NAV_ITEMS.map((item) => {
           const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
           const Icon = item.icon
@@ -51,7 +55,7 @@ export function BottomNav({ unreadCount = 0, overlay = false }: { unreadCount?: 
                 className={cn(
                   'relative grid place-items-center rounded-full transition-transform',
                   item.center ? 'size-12 -mt-5 shadow-lg' : 'size-9',
-                  item.center && (overlay ? 'bg-white text-black' : 'bg-jade text-jade-foreground'),
+                  item.center && (overlay ? 'bg-white text-black ring-4 ring-white/10' : 'bg-jade text-jade-foreground ring-4 ring-jade/10'),
                   !item.center && active && (overlay ? 'bg-white/15' : 'bg-jade/10'),
                 )}
               >
@@ -67,6 +71,7 @@ export function BottomNav({ unreadCount = 0, overlay = false }: { unreadCount?: 
           )
         })}
       </div>
-    </nav>
+      </nav>
+    </>
   )
 }

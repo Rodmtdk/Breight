@@ -32,10 +32,10 @@ export function DailyRitualModal({ isOpen, onClose, type }: DailyRitualModalProp
     setLoading(true)
     if (type === 'morning') {
       await completeMorningRitual()
-      triggerSensory('success')
+      triggerSensory('milestone')
     } else {
       await completeNightRitual(reflection)
-      triggerSensory('success')
+      triggerSensory('milestone')
     }
     setLoading(false)
     onClose()

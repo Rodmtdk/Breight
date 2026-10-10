@@ -12,13 +12,24 @@ const POINTS = [
 export default function WelcomePage() {
   return (
     <main className="mx-auto flex min-h-svh w-full max-w-lg flex-col bg-background px-5 py-8">
-      <p className="text-sm font-black tracking-[0.22em] text-foreground">BR8</p>
-      <h1 className="mt-10 text-4xl font-semibold tracking-tight text-foreground text-balance">
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-black tracking-[0.22em] text-foreground">BR8</p>
+        <span className="rounded-full border border-jade/25 bg-jade/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-jade">Simple. Direct. Vivant.</span>
+      </div>
+      <div className="relative mt-10 overflow-hidden rounded-[2rem] border border-border/70 bg-gradient-to-br from-cobalt/20 via-card to-jade/10 p-6">
+        <div className="absolute -right-10 -top-10 size-32 rounded-full bg-jade/20 blur-3xl" />
+        <h1 className="relative text-4xl font-semibold tracking-tight text-foreground text-balance">
         BR8, le réseau qui va droit au but.
-      </h1>
-      <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
+        </h1>
+        <p className="relative mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
         Partage une story, retrouve tes amis, appelle-les et pars les rejoindre. Tout est au même endroit.
-      </p>
+        </p>
+        <div className="relative mt-5 flex flex-wrap gap-2 text-[11px] font-semibold text-foreground/80">
+          <span className="rounded-full bg-background/70 px-3 py-1.5">Messages chiffrés</span>
+          <span className="rounded-full bg-background/70 px-3 py-1.5">Snaps éphémères</span>
+          <span className="rounded-full bg-background/70 px-3 py-1.5">Radar d&apos;opportunités</span>
+        </div>
+      </div>
 
       <ul className="mt-8 grid grid-cols-2 gap-3">
         {POINTS.map(({ icon: Icon, label, text }) => (

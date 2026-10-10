@@ -8,8 +8,9 @@ import { EmpathyReport } from '@/components/dashboard/empathy-report'
 import { MoodCheckin } from '@/components/dashboard/mood-checkin'
 import { DailyPrompt } from '@/components/dashboard/daily-prompt'
 import { DailyQuests } from '@/components/dashboard/daily-quests'
+import { RetentionHub } from '@/components/dashboard/retention-hub'
 import { ListeningScoreCard } from '@/components/listening-score-card'
-import { Music, MapPin, StickyNote, Compass, MessageCircle, Camera, ArrowRight } from 'lucide-react'
+import { Music, MapPin, StickyNote, Compass, MessageCircle, Camera, ArrowRight, FolderOpen, Users } from 'lucide-react'
 
 const QUICK_ACTIONS = [
   { href: '/discover',  icon: Compass,       label: 'Découvrir',  desc: 'Affinités réelles', accent: 'jade'   },
@@ -18,6 +19,8 @@ const QUICK_ACTIONS = [
   { href: '/music',     icon: Music,         label: 'Musique',    desc: 'Ce que tu écoutes', accent: 'gold'   },
   { href: '/map',       icon: MapPin,        label: 'Carte',      desc: 'Connexions près',   accent: 'ruby'   },
   { href: '/notes',     icon: StickyNote,    label: 'Notes',      desc: 'Souvenirs',         accent: 'mauve'  },
+  { href: '/community', icon: Users,         label: 'Familleo',    desc: 'Événements',         accent: 'jade'   },
+  { href: '/files',     icon: FolderOpen,    label: 'Fichiers',   desc: 'Workspace ERP',      accent: 'cobalt' },
 ]
 
 const ACCENT: Record<string, { bg: string; icon: string; gradBg: string }> = {
@@ -67,6 +70,8 @@ export function HomeClient({ profile }: HomeClientProps) {
           </p>
           <DailyQuests />
         </section>
+
+        <RetentionHub />
 
         <section aria-labelledby="mood-heading" className="group">
           <p id="mood-heading" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-4 group-hover:text-muted-foreground transition-colors">

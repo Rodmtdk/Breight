@@ -151,8 +151,24 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    position: relative;
+    isolation: isolate;
+    background-image: radial-gradient(circle at 8% 0%, color-mix(in oklab, var(--gold) 16%, transparent), transparent 28rem), radial-gradient(circle at 100% 24%, color-mix(in oklab, var(--ruby) 12%, transparent), transparent 26rem), radial-gradient(circle at 50% 100%, color-mix(in oklab, var(--jade) 10%, transparent), transparent 32rem);
+    background-attachment: fixed;
     font-feature-settings: 'cv11', 'ss01';
     font-optical-sizing: auto;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -20%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.2;
+    background: conic-gradient(from 90deg at 50% 50%, color-mix(in oklab, var(--gold) 16%, transparent), color-mix(in oklab, var(--cobalt) 13%, transparent), color-mix(in oklab, var(--ruby) 12%, transparent), color-mix(in oklab, var(--jade) 14%, transparent), color-mix(in oklab, var(--gold) 16%, transparent));
+    filter: blur(80px);
+    animation: ambient-drift 24s ease-in-out infinite alternate;
   }
   h1, h2, h3 {
     font-feature-settings: 'kern', 'liga';
@@ -181,6 +197,12 @@
   }
 
   /* ── Artistic animations ── */
+  @keyframes ambient-drift {
+    0% { transform: translate3d(-3%, -2%, 0) rotate(0deg) scale(1); }
+    50% { transform: translate3d(2%, 3%, 0) rotate(12deg) scale(1.06); }
+    100% { transform: translate3d(-1%, 1%, 0) rotate(-8deg) scale(1.02); }
+  }
+
   @keyframes fade-in {
     from {
       opacity: 0;
@@ -223,6 +245,40 @@
     animation: fade-in 0.6s cubic-bezier(0.23, 1, 0.320, 1) forwards;
   }
 
+  .glass-panel {
+    background: color-mix(in oklab, var(--card) 68%, transparent);
+    border: 1px solid color-mix(in oklab, white 22%, transparent);
+    box-shadow: 0 20px 60px -32px color-mix(in oklab, black 55%, transparent), inset 0 1px 0 color-mix(in oklab, white 18%, transparent);
+    backdrop-filter: blur(24px) saturate(1.35);
+    -webkit-backdrop-filter: blur(24px) saturate(1.35);
+  }
+
+  .glass-panel-strong {
+    background: color-mix(in oklab, var(--popover) 78%, transparent);
+    border: 1px solid color-mix(in oklab, white 28%, transparent);
+    box-shadow: 0 24px 70px -36px color-mix(in oklab, black 70%, transparent), inset 0 1px 0 color-mix(in oklab, white 24%, transparent);
+    backdrop-filter: blur(30px) saturate(1.45);
+    -webkit-backdrop-filter: blur(30px) saturate(1.45);
+  }
+
+  .dynamic-surface {
+    transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+  }
+
+  .dynamic-surface:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 45px -28px color-mix(in oklab, var(--foreground) 45%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
@@ -238,7 +294,7 @@
 
   /* ── Gradients artistiques ── */
   .gradient-jade-cobalt {
-    @apply bg-gradient-to-br from-jade via-cobalt/50 to-transparent;
+    @apply bg-gradient-to-br from-gold via-ruby/70 to-cobalt/40;
   }
 
   .gradient-mauve-ruby {
@@ -384,23 +440,28 @@
 
 .dark {
   color-scheme: dark;
-  --background: oklch(0.16 0.012 255);
-  --foreground: oklch(0.97 0.004 240);
-  --card: oklch(0.21 0.012 255);
-  --card-foreground: oklch(0.97 0.004 240);
-  --popover: oklch(0.21 0.012 255);
-  --popover-foreground: oklch(0.97 0.004 240);
-  --primary: oklch(0.72 0.12 162);
-  --primary-foreground: oklch(0.16 0.02 162);
-  --secondary: oklch(0.27 0.012 255);
-  --secondary-foreground: oklch(0.97 0.004 240);
-  --muted: oklch(0.27 0.012 255);
-  --muted-foreground: oklch(0.72 0.02 255);
-  --accent: oklch(0.27 0.012 255);
-  --accent-foreground: oklch(0.97 0.004 240);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.72 0.12 162);
-  --jade: oklch(0.72 0.12 162);
-  --jade-foreground: oklch(0.16 0.02 162);
+  /* Brighter evening palette: warm surfaces with McDonald's-like energy, without copying its branding. */
+  --background: oklch(0.25 0.025 255);
+  --foreground: oklch(0.98 0.008 90);
+  --card: oklch(0.31 0.028 255);
+  --card-foreground: oklch(0.98 0.008 90);
+  --popover: oklch(0.34 0.03 255);
+  --popover-foreground: oklch(0.98 0.008 90);
+  --primary: oklch(0.82 0.16 92);
+  --primary-foreground: oklch(0.2 0.04 70);
+  --secondary: oklch(0.38 0.035 255);
+  --secondary-foreground: oklch(0.98 0.008 90);
+  --muted: oklch(0.36 0.03 255);
+  --muted-foreground: oklch(0.82 0.025 255);
+  --accent: oklch(0.38 0.035 255);
+  --accent-foreground: oklch(0.98 0.008 90);
+  --border: oklch(1 0 0 / 18%);
+  --input: oklch(1 0 0 / 20%);
+  --ring: oklch(0.82 0.16 92);
+  --jade: oklch(0.74 0.16 160);
+  --jade-foreground: oklch(0.16 0.04 160);
+  --mauve: oklch(0.72 0.18 320);
+  --cobalt: oklch(0.7 0.18 250);
+  --gold: oklch(0.84 0.17 88);
+  --ruby: oklch(0.68 0.2 28);
 }

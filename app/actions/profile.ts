@@ -57,6 +57,11 @@ export async function createPublicPage(data: {
   return page
 }
 
+export async function getMyPublicPages() {
+  const userId = await getUserId()
+  return db.select().from(publicProfilePages).where(eq(publicProfilePages.ownerUserId, userId)).orderBy(publicProfilePages.updatedAt)
+}
+
 export async function getPublicProfile(userId: string) {
   const rows = await db.select().from(profiles).where(eq(profiles.userId, userId)).limit(1)
   const profile = rows[0]

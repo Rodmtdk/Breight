@@ -71,7 +71,7 @@ export function EchoEngagement({ echoId, initialReactionCount = 0, showComments 
                 title={label}
                 className="p-1 hover:bg-secondary rounded transition-colors"
               >
-                {text || <Icon className="size-4" />}
+                {text || (Icon ? <Icon className="size-4" /> : emoji)}
               </button>
             ))}
           </div>

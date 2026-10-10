@@ -273,6 +273,46 @@ export const auditLogs = pgTable("audit_logs", {
   createdAt: timestamp("createdAt").notNull().defaultNow(),
 })
 
+export const communitySpaces = pgTable("community_spaces", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  ownerUserId: text("owner_user_id").notNull(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  spaceType: text("space_type").notNull().default("family"),
+  description: text("description"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+})
+
+export const communityEvents = pgTable("community_events", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  ownerUserId: text("owner_user_id").notNull(),
+  spaceId: text("space_id"),
+  title: text("title").notNull(),
+  description: text("description"),
+  startsAt: timestamp("starts_at").notNull(),
+  endsAt: timestamp("ends_at"),
+  location: text("location"),
+  capacity: integer("capacity"),
+  priceCents: integer("price_cents").notNull().default(0),
+  currency: text("currency").notNull().default("EUR"),
+  status: text("status").notNull().default("published"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+})
+
+export const workspaceFiles = pgTable("workspace_files", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  ownerUserId: text("owner_user_id").notNull(),
+  spaceId: text("space_id"),
+  parentId: text("parent_id"),
+  name: text("name").notNull(),
+  kind: text("kind").notNull().default("file"),
+  mimeType: text("mime_type"),
+  storagePath: text("storage_path"),
+  sizeBytes: integer("size_bytes"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+})
+
 // ---------- RARITY FEATURES ----------
 
 // 1. ECHOES SYSTEM — Réponses créent du contenu émergent visible aux autres
