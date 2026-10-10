@@ -12,12 +12,12 @@ const POINTS = [
 export default function WelcomePage() {
   return (
     <main className="mx-auto flex min-h-svh w-full max-w-lg flex-col bg-background px-5 py-8">
-      <p className="text-sm font-semibold tracking-tight text-foreground">Breight</p>
+      <p className="text-sm font-black tracking-[0.22em] text-foreground">BR8</p>
       <h1 className="mt-10 text-4xl font-semibold tracking-tight text-foreground text-balance">
-        Un réseau simple. Une carte qui guide vraiment.
+        BR8, le réseau qui va droit au but.
       </h1>
       <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
-        Caméra, stories, messages et navigation. Rien de plus.
+        Partage une story, retrouve tes amis, appelle-les et pars les rejoindre. Tout est au même endroit.
       </p>
 
       <ul className="mt-8 grid grid-cols-2 gap-3">

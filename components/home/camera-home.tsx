@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ImageIcon, RefreshCw, Send } from 'lucide-react'
+import { ImageIcon, RefreshCw, Send, User } from 'lucide-react'
 import { BottomNav } from '@/components/bottom-nav'
 import { postMoment } from '@/app/actions/feed'
 import { triggerSensory } from '@/lib/sensory'
@@ -132,8 +132,11 @@ export function CameraHome({
 
       <header className="absolute inset-x-0 top-0 z-10 px-4 pt-[max(0.75rem,env(safe-area-inset-top))]">
         <div className="mb-3 flex items-center justify-between">
-          <p className="text-sm font-semibold tracking-tight">Breight</p>
-          <p className="text-xs text-white/70">{name}</p>
+          <p className="text-sm font-black tracking-[0.22em]">BR8</p>
+          <Link href="/profile" aria-label="Ouvrir mon profil" className="flex items-center gap-2 rounded-full bg-black/25 px-3 py-1.5 text-xs text-white/85 backdrop-blur">
+            <span className="max-w-24 truncate">{name}</span>
+            <User className="size-3.5" aria-hidden="true" />
+          </Link>
         </div>
         <div className="pointer-events-auto flex gap-3 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Link href="/feed" className="flex w-16 shrink-0 flex-col items-center gap-1">

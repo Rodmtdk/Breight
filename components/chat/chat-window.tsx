@@ -186,7 +186,7 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
       <div className="flex-1 overflow-y-auto px-4 py-4">
         {keyMissing ? (
           <div className="rounded-lg bg-secondary p-4 text-sm leading-relaxed text-secondary-foreground">
-            {"Cette personne n'a pas encore ouvert BREIGHT sur son appareil. Les cl\u00e9s de chiffrement seront \u00e9chang\u00e9es \u00e0 sa premi\u00e8re connexion."}
+            {"Cette personne n'a pas encore ouvert BR8 sur son appareil. Les cl\u00e9s de chiffrement seront \u00e9chang\u00e9es \u00e0 sa premi\u00e8re connexion."}
           </div>
         ) : decrypted.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-3 text-center">

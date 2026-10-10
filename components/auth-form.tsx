@@ -54,7 +54,7 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
       {/* ── Top bar ── */}
       <div className="flex items-center justify-between px-5 py-5 max-w-lg mx-auto w-full">
         <Link href="/welcome" className="font-serif text-2xl font-bold tracking-tight bg-gradient-to-r from-jade via-foreground to-ruby bg-clip-text text-transparent">
-          Breight
+          BR8
         </Link>
         <Link
           href={isSignUp ? '/sign-in' : '/sign-up'}
@@ -73,7 +73,7 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
         <div>
           <h1 className="font-serif text-[2rem] font-semibold tracking-tight text-foreground text-balance leading-snug">
             {isSignUp ? (
-              <>Rejoins <span className="italic text-jade">Breight</span></>
+              <>Rejoins <span className="italic text-jade">BR8</span></>
             ) : (
               <>Content de te <span className="italic text-jade">revoir</span></>
             )}
@@ -151,7 +151,7 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
         {isSignUp && (
           <div className="flex flex-col gap-3 pt-5 border-t border-border/60">
             <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-              Pourquoi Breight ?
+              Pourquoi BR8 ?
             </p>
             {TRUST_POINTS.map(({ icon: Icon, color, bg, text }) => (
               <div key={text} className="flex items-center gap-3.5">

@@ -57,7 +57,7 @@ export function DiscoveryDeck({ initialProfiles }: { initialProfiles: DiscoveryP
       <div className="flex flex-1 flex-col items-center justify-center gap-3 px-8 text-center">
         <Heart className="size-10 text-muted-foreground" aria-hidden="true" />
         <p className="text-sm leading-relaxed text-muted-foreground">
-          {"Plus de profils pour l'instant. Reviens bient\u00f4t \u2014 de nouvelles personnes rejoignent BREIGHT chaque jour."}
+          {"Plus de profils pour l'instant. Reviens bient\u00f4t \u2014 de nouvelles personnes rejoignent BR8 chaque jour."}
         </p>
       </div>
     )
