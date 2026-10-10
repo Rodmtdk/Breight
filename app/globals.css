@@ -245,6 +245,28 @@
     animation: fade-in 0.6s cubic-bezier(0.23, 1, 0.320, 1) forwards;
   }
 
+  .atelier-frame {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid color-mix(in oklab, var(--gold) 38%, var(--border));
+    background: linear-gradient(135deg, color-mix(in oklab, var(--card) 92%, var(--gold)), color-mix(in oklab, var(--card) 96%, var(--ruby)) 58%, var(--card));
+    box-shadow: 0 24px 55px -34px color-mix(in oklab, var(--foreground) 48%, transparent), inset 0 1px 0 color-mix(in oklab, white 48%, transparent);
+  }
+
+  .atelier-frame::after {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    pointer-events: none;
+    border: 1px solid color-mix(in oklab, var(--gold) 22%, transparent);
+    border-radius: inherit;
+  }
+
+  .atelier-rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--ruby), transparent);
+  }
+
   .glass-panel {
     background: color-mix(in oklab, var(--card) 68%, transparent);
     border: 1px solid color-mix(in oklab, white 22%, transparent);

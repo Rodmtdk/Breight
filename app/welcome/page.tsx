@@ -11,12 +11,12 @@ const POINTS = [
 
 export default function WelcomePage() {
   return (
-    <main className="mx-auto flex min-h-svh w-full max-w-lg flex-col bg-background px-5 py-8">
+    <main className="mx-auto flex min-h-svh w-full max-w-2xl flex-col bg-background px-5 py-8 sm:px-8">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm font-black tracking-[0.22em] text-foreground"><span className="grid size-5 place-items-center rounded-full bg-gold text-[10px] text-background">B</span><span>breight</span></div>
         <span className="rounded-full border border-jade/25 bg-jade/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-jade">Simple. Direct. Vivant.</span>
       </div>
-      <div className="relative mt-10 overflow-hidden rounded-[2rem] border border-border/70 bg-gradient-to-br from-cobalt/20 via-card to-jade/10 p-6">
+      <div className="atelier-frame relative mt-10 rounded-[2rem] p-7 sm:p-10">
         <div className="absolute -right-10 -top-10 size-32 rounded-full bg-jade/20 blur-3xl" />
         <h1 className="relative text-4xl font-semibold tracking-tight text-foreground text-balance">
         BR8, le réseau qui va droit au but.
@@ -31,7 +31,7 @@ export default function WelcomePage() {
         </div>
       </div>
 
-      <ul className="mt-8 grid grid-cols-2 gap-3">
+      <ul className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
         {POINTS.map(({ icon: Icon, label, text }) => (
           <li key={label} className="rounded-2xl border border-border/80 bg-card/70 p-4 shadow-sm">
             <Icon className="size-5 text-jade" aria-hidden="true" />

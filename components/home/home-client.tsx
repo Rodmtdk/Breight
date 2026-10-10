@@ -45,7 +45,8 @@ export function HomeClient({ profile }: HomeClientProps) {
         <div className="absolute -bottom-32 left-1/4 w-72 h-72 bg-gradient-to-tr from-mauve/4 to-transparent rounded-full blur-3xl" style={{ animationDelay: '1s' }} aria-hidden="true" />
       </div>
 
-      <header className="mx-auto max-w-lg px-5 pt-24 pb-4 relative z-10">
+      <header className="mx-auto max-w-2xl px-5 pt-24 pb-4 relative z-10">
+        <div className="atelier-rule mb-6" />
         <div className="precision-rule">
           <div className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-foreground/80"><span className="grid size-4 place-items-center rounded-full bg-gold text-[8px] text-background">B</span><span>breight</span></div>
           <p className="text-[10px] text-muted-foreground tracking-[0.18em] uppercase font-semibold">{greeting} · calibré pour le vrai</p>
@@ -55,7 +56,7 @@ export function HomeClient({ profile }: HomeClientProps) {
         </div>
       </header>
 
-      <main className="precision-grid mx-auto max-w-lg px-5 flex flex-col gap-10 mt-8 relative z-10">
+      <main className="mx-auto max-w-2xl px-5 flex flex-col gap-8 mt-8 relative z-10">
         <section aria-labelledby="quests-heading" className="group">
           <p id="quests-heading" className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3 group-hover:text-muted-foreground transition-colors">
             🎯 Challenges d&apos;écoute
@@ -63,7 +64,9 @@ export function HomeClient({ profile }: HomeClientProps) {
           <DailyQuests />
         </section>
 
-        <RetentionHub />
+        <div className="atelier-frame rounded-[2rem] p-5 sm:p-6">
+          <RetentionHub />
+        </div>
 
         <section aria-labelledby="mood-heading" className="group">
           <p id="mood-heading" className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/70 mb-3 group-hover:text-muted-foreground transition-colors">
