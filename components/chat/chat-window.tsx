@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
 import useSWR from "swr"
-import { ArrowLeft, Lock, Phone, Send, Sparkles, Video } from "lucide-react"
+import { ArrowLeft, Camera, Lock, Phone, Send, Sparkles, Video } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getConversationInfo, getMessages, sendEncryptedMessage } from "@/app/actions/chat"
@@ -27,6 +27,8 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
   const [promptOpen, setPromptOpen] = useState(false)
   const [activePromptId, setActivePromptId] = useState<string | null>(null)
   const [sending, setSending] = useState(false)
+  const [snapPreview, setSnapPreview] = useState<string | null>(null)
+  const snapInputRef = useRef<HTMLInputElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const prevCountRef = useRef(0)
   const { startCall, busy } = useCall()
@@ -80,6 +82,39 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
     () => (activePromptId ? getPromptById(activePromptId) : null),
     [activePromptId],
   )
+
+  const handleSnapSelected = useCallback((file: File | undefined) => {
+    if (!file || !file.type.startsWith("image/")) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      if (typeof reader.result !== "string") return
+      const image = new Image()
+      image.onload = () => {
+        const scale = Math.min(1, 1280 / Math.max(image.naturalWidth, image.naturalHeight))
+        const canvas = document.createElement("canvas")
+        canvas.width = Math.round(image.naturalWidth * scale)
+        canvas.height = Math.round(image.naturalHeight * scale)
+        canvas.getContext("2d")?.drawImage(image, 0, 0, canvas.width, canvas.height)
+        setSnapPreview(canvas.toDataURL("image/jpeg", 0.78))
+      }
+      image.src = reader.result
+    }
+    reader.readAsDataURL(file)
+  }, [])
+
+  const handleSendSnap = useCallback(async () => {
+    if (!snapPreview || !info?.otherPublicKey || sending) return
+    setSending(true)
+    try {
+      const payload = JSON.stringify({ kind: "snap", image: snapPreview })
+      const { ciphertext, nonce } = await encryptMessage(payload, info.otherPublicKey)
+      await sendEncryptedMessage({ conversationId, ciphertext, nonce, messageType: "snap" })
+      setSnapPreview(null)
+      await mutate()
+    } finally {
+      setSending(false)
+    }
+  }, [snapPreview, info, sending, conversationId, mutate])
 
   const handleSend = useCallback(async () => {
     const text = input.trim()
@@ -215,9 +250,7 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
                         Prompt guid&eacute;
                       </span>
                     ) : null}
-                    <p className="text-sm leading-relaxed">
-                      {m.text ?? "Message chiffr\u00e9 (cl\u00e9 d'un autre appareil)"}
-                    </p>
+                    {m.messageType === "snap" && m.text ? (() => { try { const snap = JSON.parse(m.text) as { kind?: string; image?: string }; return snap.kind === "snap" && snap.image ? <img src={snap.image} alt="Snap reçu" className="max-h-72 max-w-full rounded-xl object-cover" /> : <p className="text-sm">Snap illisible</p> } catch { return <p className="text-sm">Snap illisible</p> } })() : <p className="text-sm leading-relaxed">{m.text ?? "Message chiffré (clé d'un autre appareil)"}</p>}
                     <span className="mt-1 block text-right text-[10px] opacity-70">
                       {new Date(m.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
                     </span>
@@ -236,7 +269,10 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
         </div>
       ) : null}
 
+      {snapPreview ? <div className="mx-4 mb-2 flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-2"><img src={snapPreview} alt="Aperçu du snap" className="size-14 rounded-xl object-cover" /><span className="flex-1 text-xs text-muted-foreground">Snap prêt à envoyer</span><Button type="button" size="sm" onClick={handleSendSnap} disabled={sending}>Envoyer</Button><Button type="button" variant="ghost" size="sm" onClick={() => setSnapPreview(null)}>Annuler</Button></div> : null}
       <div className="flex items-end gap-2 border-t border-border px-4 py-3">
+        <input ref={snapInputRef} type="file" accept="image/*" capture="environment" className="sr-only" onChange={(event) => { handleSnapSelected(event.target.files?.[0]); event.currentTarget.value = "" }} />
+        <Button type="button" variant="secondary" size="icon" aria-label="Envoyer un snap" onClick={() => snapInputRef.current?.click()} disabled={keyMissing || sending}><Camera className="size-4" /></Button>
         <Button
           type="button"
           variant="secondary"

@@ -103,7 +103,7 @@ export async function sendEncryptedMessage(data: {
   conversationId: string
   ciphertext: string
   nonce: string
-  messageType?: "text" | "prompt" | "mood" | "music"
+  messageType?: "text" | "prompt" | "mood" | "music" | "snap"
   promptId?: string
   moodTag?: string
   isQuestion?: boolean
