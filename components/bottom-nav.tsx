@@ -41,7 +41,7 @@ export function BottomNav({ unreadCount = 0, overlay = false }: { unreadCount?: 
               onClick={() => triggerSensory('tap')}
               aria-current={active ? 'page' : undefined}
               className={cn(
-                'relative flex min-h-14 flex-1 flex-col items-center justify-end gap-1 pb-1 text-[10px] font-medium',
+                'relative flex min-h-14 flex-1 flex-col items-center justify-end gap-1 rounded-2xl pb-1 text-[10px] font-semibold transition-colors',
                 overlay
                   ? active ? 'text-white' : 'text-white/65'
                   : active ? 'text-jade' : 'text-muted-foreground',

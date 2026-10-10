@@ -130,6 +130,9 @@ export function CameraHome({
         <img src={shot} alt="Photo prise" className="absolute inset-0 size-full object-cover" />
       ) : null}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/70" />
+      <div className="pointer-events-none absolute right-4 top-32 z-[1] hidden w-28 overflow-hidden rounded-3xl border border-white/20 bg-black/20 shadow-2xl backdrop-blur sm:block">
+        <img src="/br8-avatar-art.png" alt="" className="w-[180%] max-w-none translate-x-[-28%]" />
+      </div>
 
       <header className="absolute inset-x-0 top-0 z-10 px-4 pt-[max(0.75rem,env(safe-area-inset-top))]">
         <div className="mb-3 flex items-center justify-between">

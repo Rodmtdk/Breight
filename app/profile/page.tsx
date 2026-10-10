@@ -26,9 +26,17 @@ export default async function ProfilePage() {
             <p className="truncate text-sm text-muted-foreground">{session.user.email}</p>
           </div>
         </div>
+        <div className="relative mt-5 overflow-hidden rounded-[2rem] border border-border/60 bg-gradient-to-br from-[#24203d] via-[#17182d] to-[#0e1926] p-4 shadow-[0_18px_60px_rgba(31,24,67,0.25)]">
+          <div className="relative z-10 max-w-[58%]">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/55">Ton espace</p>
+            <p className="mt-2 text-xl font-semibold leading-tight text-white">Reste toi-même.<br />Le reste suit.</p>
+          </div>
+          <img src="/br8-avatar-art.png" alt="Illustration de quatre avatars BR8" className="absolute -right-8 -bottom-10 w-[68%] max-w-none rotate-[-4deg] opacity-95" />
+          <div className="pointer-events-none absolute -right-8 -top-10 size-32 rounded-full bg-[#e46b91]/25 blur-3xl" />
+        </div>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">Gère tes informations, ta visibilité et les personnes avec qui tu échanges.</p>
       </header>
-      <div className="flex flex-col gap-6 px-5">
+      <div className="flex flex-col gap-4 px-5">
         <ProfileEditor
           initial={
             profile
