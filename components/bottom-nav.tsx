@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Camera, Map, MessageCircle, Play, Radio, User, Users } from 'lucide-react'
+import { Camera, FolderOpen, Map, MessageCircle, Play, Radio, User, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { triggerSensory } from '@/lib/sensory'
 
