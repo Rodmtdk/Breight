@@ -2,19 +2,17 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Camera, FolderOpen, Map, MessageCircle, Play, Radio, User, Users } from 'lucide-react'
+import { Camera, Map, Play, Radio, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { triggerSensory } from '@/lib/sensory'
 import { Br8DynamicIsland } from '@/components/br8-dynamic-island'
 
 const NAV_ITEMS = [
-  { href: '/chat', label: 'Messages', icon: MessageCircle, badge: true },
   { href: '/discover', label: 'Amis', icon: Users },
-  { href: '/', label: 'Caméra', icon: Camera, center: true },
   { href: '/feed', label: 'Stories', icon: Play },
+  { href: '/', label: 'Caméra', icon: Camera, center: true },
   { href: '/map', label: 'Carte', icon: Map },
   { href: '/radar', label: 'Radar', icon: Radio },
-  { href: '/profile', label: 'Profil', icon: User },
 ]
 
 export function BottomNav({ unreadCount = 0, overlay = false }: { unreadCount?: number; overlay?: boolean }) {
@@ -36,7 +34,7 @@ export function BottomNav({ unreadCount = 0, overlay = false }: { unreadCount?: 
         {NAV_ITEMS.map((item) => {
           const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
           const Icon = item.icon
-          const showBadge = item.badge && unreadCount > 0
+          const showBadge = false
 
           return (
             <Link
