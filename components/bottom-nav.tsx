@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Camera, Map, MessageCircle, Play, Users } from 'lucide-react'
+import { Camera, Map, MessageCircle, Play, User, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { triggerSensory } from '@/lib/sensory'
 
@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: '/', label: 'Caméra', icon: Camera, center: true },
   { href: '/feed', label: 'Stories', icon: Play },
   { href: '/map', label: 'Carte', icon: Map },
+  { href: '/profile', label: 'Profil', icon: User },
 ]
 
 export function BottomNav({ unreadCount = 0, overlay = false }: { unreadCount?: number; overlay?: boolean }) {
@@ -40,7 +41,7 @@ export function BottomNav({ unreadCount = 0, overlay = false }: { unreadCount?: 
               onClick={() => triggerSensory('tap')}
               aria-current={active ? 'page' : undefined}
               className={cn(
-                'relative flex min-h-14 flex-1 flex-col items-center justify-end gap-1 pb-1 text-[10px] font-medium',
+                'relative flex min-h-14 flex-1 flex-col items-center justify-end gap-1 rounded-2xl pb-1 text-[10px] font-semibold transition-colors',
                 overlay
                   ? active ? 'text-white' : 'text-white/65'
                   : active ? 'text-jade' : 'text-muted-foreground',

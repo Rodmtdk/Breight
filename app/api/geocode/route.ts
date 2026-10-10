@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 
   try {
     const response = await fetch(url, {
-      headers: { 'User-Agent': 'Breight/1.0 (navigation; contact: support@breight.app)' },
+      headers: { 'User-Agent': 'BR8/1.0 (navigation; contact: support@br8.app)' },
       signal: AbortSignal.timeout(6000),
     })
 

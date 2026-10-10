@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Camera, Clock, X } from "lucide-react"
+import { Clock, ImageIcon, Music2, Video, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
@@ -14,6 +14,8 @@ export function MomentComposer() {
   const router = useRouter()
   const fileRef = useRef<HTMLInputElement>(null)
   const [content, setContent] = useState("")
+  const [category, setCategory] = useState("daily")
+  const [mood, setMood] = useState("")
   const [file, setFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [ephemeral, setEphemeral] = useState(true)
@@ -21,6 +23,11 @@ export function MomentComposer() {
   const [error, setError] = useState<string | null>(null)
 
   const handleFileChange = (f: File | null) => {
+    if (f && f.size > 50 * 1024 * 1024) {
+      setError("Le fichier doit faire moins de 50 Mo.")
+      return
+    }
+    setError(null)
     setFile(f)
     if (previewUrl) URL.revokeObjectURL(previewUrl)
     setPreviewUrl(f ? URL.createObjectURL(f) : null)
@@ -43,22 +50,32 @@ export function MomentComposer() {
         }
         mediaPathname = json.pathname
       }
+      const moodLine = mood.trim() ? `mood::${mood.trim()}` : ""
       await postMoment({
-        content: content.trim() || undefined,
+        content: [moodLine, content.trim()].filter(Boolean).join("\n\n") || undefined,
         mediaUrl: mediaPathname,
+        feedType: category,
         ephemeral,
       })
       triggerSensory("milestone")
       setContent("")
       handleFileChange(null)
       router.refresh()
+    } catch {
+      setError("Impossible de publier pour le moment. Vérifie ta connexion puis réessaie.")
     } finally {
       setBusy(false)
     }
   }
 
   return (
-    <section className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
+    <section className="flex flex-col gap-3 rounded-3xl border border-border/70 bg-card p-4 shadow-sm">
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {[['daily', 'Daily'], ['offer', 'Offre'], ['sale', 'À vendre'], ['job', 'Emploi']].map(([value, label]) => (
+          <button key={value} type="button" onClick={() => setCategory(value)} className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold ${category === value ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>{label}</button>
+        ))}
+      </div>
+      <input value={mood} onChange={(event) => setMood(event.target.value)} placeholder="Ton mood du moment..." aria-label="Mood du moment" className="h-10 rounded-xl border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring" />
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
@@ -69,8 +86,7 @@ export function MomentComposer() {
 
       {previewUrl ? (
         <div className="relative overflow-hidden rounded-xl">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={previewUrl || "/placeholder.svg"} alt="Aper\u00e7u de la photo" className="max-h-64 w-full object-cover" />
+          {file?.type.startsWith("video/") ? <video src={previewUrl} controls playsInline className="max-h-64 w-full bg-black object-cover" aria-label="Aperçu de la vidéo" /> : file?.type.startsWith("audio/") ? <div className="flex items-center gap-3 bg-secondary px-4 py-5"><Music2 className="size-5" /><audio src={previewUrl} controls className="min-w-0 flex-1" /></div> : <img src={previewUrl} alt="Aperçu de la photo" className="max-h-64 w-full object-cover" />}
           <button
             type="button"
             onClick={() => handleFileChange(null)}
@@ -85,11 +101,11 @@ export function MomentComposer() {
       <input
         ref={fileRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/gif"
+        accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,audio/mpeg,audio/mp4,audio/wav"
         capture="environment"
         className="sr-only"
         onChange={(e) => handleFileChange(e.target.files?.[0] ?? null)}
-        aria-label="Choisir une photo"
+        aria-label="Choisir une photo, une vidéo ou un audio"
       />
 
       <div className="flex items-center justify-between">
@@ -102,8 +118,8 @@ export function MomentComposer() {
             fileRef.current?.click()
           }}
         >
-          <Camera className="size-4" />
-          Photo
+          <ImageIcon className="size-4" />
+          Photo / vidéo / audio
         </Button>
         <div className="flex items-center gap-2">
           <Clock className="size-3.5 text-muted-foreground" aria-hidden="true" />

@@ -51,10 +51,10 @@ export default async function RarityPage() {
     <main className="mx-auto flex min-h-svh w-full max-w-md flex-col bg-background pb-20">
       <header className="px-5 pt-8 pb-4">
         <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">
-          Rarité Breight
+          Rarité BR8
         </h1>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          5 systèmes uniques qui rendent Breight irremplaçable. Aucune autre plateforme n'a cela.
+          5 systèmes uniques qui rendent BR8 irremplaçable. Aucune autre plateforme n'a cela.
         </p>
       </header>
 
@@ -97,7 +97,7 @@ export default async function RarityPage() {
         <ul className="space-y-2 text-xs text-muted-foreground leading-relaxed">
           <li>• <strong>Echoes</strong> transforment chaque réponse en contenu émergent</li>
           <li>• <strong>Listening Style</strong> match comment vous écoutez, pas qui vous êtes</li>
-          <li>• <strong>Rituels</strong> débloquent des rites d'initiation Breight</li>
+          <li>• <strong>Rituels</strong> débloquent des rites d'initiation BR8</li>
           <li>• <strong>Analytics poétiques</strong> racontent votre histoire d'écoute</li>
           <li>• <strong>Daily Rituals</strong> créent l'habitude quotidienne irrésistible</li>
         </ul>

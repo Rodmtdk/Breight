@@ -19,7 +19,7 @@ const INTERESTS = [
 ]
 
 const STEPS = [
-  { id: 1, label: 'Bienvenue', hint: 'Découvre la philosophie BREIGHT' },
+  { id: 1, label: 'Bienvenue', hint: 'Découvre la philosophie BR8' },
   { id: 2, label: 'Qui tu es', hint: 'Quelques mots pour te présenter' },
   { id: 3, label: 'Tes passions', hint: 'Choisis au moins 3 centres d\'intérêt' },
   { id: 4, label: "C'est parti", hint: 'Tout est prêt' },
@@ -91,7 +91,7 @@ export function OnboardingFlow({ userName }: { userName: string }) {
         <div className="flex flex-1 flex-col gap-8 animate-in fade-in slide-in-from-right-4 duration-300 py-8">
           <div className="text-center">
             <h1 className="font-serif text-4xl font-bold tracking-tight text-foreground text-balance">
-              Bienvenue dans BREIGHT
+              Bienvenue dans BR8
             </h1>
             <p className="mt-3 text-base text-muted-foreground leading-relaxed max-w-sm mx-auto">
               {BREIGHT.manifesto.subheading}
@@ -267,7 +267,7 @@ export function OnboardingFlow({ userName }: { userName: string }) {
               Tout est prêt, {displayName.split(' ')[0]} !
             </h1>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
-              Bienvenue dans BREIGHT. Des connexions vraies t&apos;attendent.
+              Bienvenue dans BR8. Des connexions vraies t&apos;attendent.
             </p>
           </div>
 
@@ -296,7 +296,7 @@ export function OnboardingFlow({ userName }: { userName: string }) {
               onClick={handleFinish}
               disabled={saving}
             >
-              {saving ? 'Enregistrement...' : 'Entrer dans BREIGHT'}
+              {saving ? 'Enregistrement...' : 'Entrer dans BR8'}
             </Button>
           </div>
         </div>

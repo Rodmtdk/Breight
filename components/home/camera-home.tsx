@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ImageIcon, RefreshCw, Send } from 'lucide-react'
+import { ImageIcon, RefreshCw, Send, User, Video } from 'lucide-react'
 import { BottomNav } from '@/components/bottom-nav'
 import { postMoment } from '@/app/actions/feed'
 import { triggerSensory } from '@/lib/sensory'
@@ -28,12 +28,18 @@ export function CameraHome({
   const router = useRouter()
   const videoRef = useRef<HTMLVideoElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
+  const recorderRef = useRef<MediaRecorder | null>(null)
+  const chunksRef = useRef<Blob[]>([])
+  const [videoMode, setVideoMode] = useState(false)
+  const [recording, setRecording] = useState(false)
+  const [recordedVideo, setRecordedVideo] = useState<Blob | null>(null)
   const [facing, setFacing] = useState<'user' | 'environment'>('environment')
   const [ready, setReady] = useState(false)
   const [denied, setDenied] = useState(false)
   const [shot, setShot] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [cameraAttempt, setCameraAttempt] = useState(0)
 
   useEffect(() => {
     let cancelled = false
@@ -71,11 +77,32 @@ export function CameraHome({
       cancelled = true
       streamRef.current?.getTracks().forEach((track) => track.stop())
     }
-  }, [facing])
+  }, [cameraAttempt, facing])
 
   function capture() {
     const video = videoRef.current
     if (!video || !ready) return
+    if (videoMode) {
+      if (recording) {
+        recorderRef.current?.stop()
+        setRecording(false)
+        return
+      }
+      const stream = streamRef.current
+      if (!stream || !('MediaRecorder' in window)) {
+        setError('La vidéo n’est pas disponible sur cet appareil.')
+        return
+      }
+      chunksRef.current = []
+      const recorder = new MediaRecorder(stream)
+      recorder.ondataavailable = (event) => event.data.size && chunksRef.current.push(event.data)
+      recorder.onstop = () => setRecordedVideo(new Blob(chunksRef.current, { type: recorder.mimeType || 'video/webm' }))
+      recorder.start()
+      recorderRef.current = recorder
+      setRecording(true)
+      window.setTimeout(() => recorder.state === 'recording' && recorder.stop(), 15000)
+      return
+    }
     const canvas = document.createElement('canvas')
     canvas.width = video.videoWidth || 720
     canvas.height = video.videoHeight || 1280
@@ -88,12 +115,12 @@ export function CameraHome({
   }
 
   async function sendStory() {
-    if (!shot || busy) return
+    if ((!shot && !recordedVideo) || busy) return
     setBusy(true)
     setError(null)
     try {
-      const blob = await (await fetch(shot)).blob()
-      const file = new File([blob], 'story.jpg', { type: 'image/jpeg' })
+      const blob = recordedVideo ?? await (await fetch(shot!)).blob()
+      const file = new File([blob], recordedVideo ? 'story.webm' : 'story.jpg', { type: blob.type || 'image/jpeg' })
       const formData = new FormData()
       formData.append('file', file)
       const upload = await fetch('/api/upload', { method: 'POST', body: formData })
@@ -105,6 +132,8 @@ export function CameraHome({
       await postMoment({ mediaUrl: json.pathname, ephemeral: true })
       triggerSensory('milestone')
       setShot(null)
+      setRecordedVideo(null)
+      setVideoMode(false)
       router.push('/feed')
       router.refresh()
     } catch {
@@ -127,13 +156,25 @@ export function CameraHome({
       {shot ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={shot} alt="Photo prise" className="absolute inset-0 size-full object-cover" />
-      ) : null}
+      ) : recordedVideo ? <video src={URL.createObjectURL(recordedVideo)} autoPlay muted loop playsInline className="absolute inset-0 size-full object-cover" aria-label="Vidéo enregistrée" /> : null}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/70" />
+      <div className="pointer-events-none absolute right-4 top-32 z-[1] hidden w-28 overflow-hidden rounded-3xl border border-white/20 bg-black/20 shadow-2xl backdrop-blur sm:block">
+        <img src="/br8-avatar-art.png" alt="" className="w-[180%] max-w-none translate-x-[-28%]" />
+      </div>
 
       <header className="absolute inset-x-0 top-0 z-10 px-4 pt-[max(0.75rem,env(safe-area-inset-top))]">
         <div className="mb-3 flex items-center justify-between">
-          <p className="text-sm font-semibold tracking-tight">Breight</p>
-          <p className="text-xs text-white/70">{name}</p>
+          <p className="text-sm font-black tracking-[0.22em]">BR8</p>
+          <Link href="/profile" aria-label="Ouvrir mon profil" className="flex items-center gap-2 rounded-full bg-black/25 px-3 py-1.5 text-xs text-white/85 backdrop-blur">
+            <span className="max-w-24 truncate">{name}</span>
+            <User className="size-3.5" aria-hidden="true" />
+          </Link>
+        </div>
+        <div className="pointer-events-auto mb-3 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <Link href="/brief" className="flex shrink-0 items-center gap-2 rounded-full border border-jade/50 bg-jade/15 px-3 py-2 text-xs font-semibold text-white backdrop-blur">
+            <span className="grid size-5 place-items-center rounded-full bg-jade text-[10px] text-jade-foreground">B</span>
+            Débloquer un sujet
+          </Link>
         </div>
         <div className="pointer-events-auto flex gap-3 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Link href="/feed" className="flex w-16 shrink-0 flex-col items-center gap-1">
@@ -162,8 +203,18 @@ export function CameraHome({
         <div className="absolute inset-x-8 top-1/2 z-10 -translate-y-1/2 rounded-2xl bg-black/70 p-5 text-center backdrop-blur">
           <p className="text-sm font-medium">Caméra indisponible</p>
           <p className="mt-1 text-xs leading-relaxed text-white/70">
-            Autorise la caméra, ou ouvre Stories pour publier une photo.
+            Autorise la caméra pour prendre une photo, ou ouvre Stories pour publier depuis ta galerie.
           </p>
+          <button
+            type="button"
+            onClick={() => {
+              setDenied(false)
+              setCameraAttempt((value) => value + 1)
+            }}
+            className="mt-4 rounded-full bg-white px-4 py-2 text-xs font-semibold text-black"
+          >
+            Réessayer
+          </button>
         </div>
       ) : null}
 
@@ -180,7 +231,7 @@ export function CameraHome({
           <ImageIcon className="size-5" />
         </Link>
 
-        {shot ? (
+        {shot || recordedVideo ? (
           <button
             type="button"
             onClick={() => void sendStory()}
@@ -202,13 +253,16 @@ export function CameraHome({
           </button>
         )}
 
+        <button type="button" onClick={() => setVideoMode((value) => !value)} aria-label="Mode vidéo" className={`grid size-12 place-items-center rounded-2xl backdrop-blur ${videoMode ? 'bg-primary text-primary-foreground' : 'bg-white/15'}`}>
+          <Video className="size-5" />
+        </button>
         <button
           type="button"
           onClick={() => {
-            if (shot) setShot(null)
+            if (shot || recordedVideo) { setShot(null); setRecordedVideo(null) }
             else setFacing((current) => (current === 'environment' ? 'user' : 'environment'))
           }}
-          aria-label={shot ? 'Reprendre' : 'Changer de caméra'}
+          aria-label={shot || recordedVideo ? 'Reprendre' : 'Changer de caméra'}
           className="grid size-12 place-items-center rounded-2xl bg-white/15 backdrop-blur"
         >
           <RefreshCw className="size-5" />

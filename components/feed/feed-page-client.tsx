@@ -45,9 +45,13 @@ export function FeedPageClient({
 
   return (
     <main className="mx-auto flex min-h-svh w-full max-w-md flex-col bg-background pb-20">
+      <div className="h-1 w-full bg-gradient-to-r from-jade via-cobalt to-ruby" aria-hidden="true" />
       <header className="px-5 pt-8 pb-4">
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">Stories</h1>
-        <p className="mt-1 text-sm text-muted-foreground">24 heures, puis ça disparaît.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Un fil pour les offres, les ventes et les vrais moments.</p>
+        <div className="mt-4 flex gap-2 overflow-x-auto pb-1" aria-label="Types de publications">
+          {['Tout', 'Daily', 'Emploi', 'À vendre'].map((filter) => <span key={filter} className="shrink-0 rounded-full bg-secondary px-3 py-1.5 text-xs font-semibold text-secondary-foreground">{filter}</span>)}
+        </div>
       </header>
       <div className="flex flex-col gap-5 px-5">
         <MomentComposer />

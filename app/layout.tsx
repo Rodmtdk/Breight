@@ -10,8 +10,8 @@ import './globals.css'
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
-  title: 'Breight',
-  description: 'Caméra, stories, messages et carte. Un réseau simple, avec une vraie navigation.',
+  title: 'BR8',
+  description: 'BR8 : caméra, stories, messages, amis et appels vidéo dans une interface simple.',
   generator: 'v0.app',
 }
 
