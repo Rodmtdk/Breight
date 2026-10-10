@@ -6,7 +6,7 @@ import useSWR from "swr"
 import { ArrowLeft, Camera, Lock, Phone, Send, Sparkles, Video } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { getConversationInfo, getMessages, sendEncryptedMessage } from "@/app/actions/chat"
+import { consumeSnap, getConversationInfo, getMessages, sendEncryptedMessage } from "@/app/actions/chat"
 import { decryptMessage, encryptMessage } from "@/lib/crypto"
 import { triggerSensory } from "@/lib/sensory"
 import { getPromptById } from "@/lib/prompts"
@@ -28,6 +28,7 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
   const [activePromptId, setActivePromptId] = useState<string | null>(null)
   const [sending, setSending] = useState(false)
   const [snapPreview, setSnapPreview] = useState<string | null>(null)
+  const [openedSnaps, setOpenedSnaps] = useState<Record<string, string>>({})
   const snapInputRef = useRef<HTMLInputElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const prevCountRef = useRef(0)
@@ -78,6 +79,10 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [decrypted.length])
 
+  useEffect(() => {
+    return () => Object.values(openedSnaps).forEach((image) => URL.revokeObjectURL(image))
+  }, [openedSnaps])
+
   const activePrompt = useMemo(
     () => (activePromptId ? getPromptById(activePromptId) : null),
     [activePromptId],
@@ -101,6 +106,19 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
     }
     reader.readAsDataURL(file)
   }, [])
+
+  const handleOpenSnap = useCallback(async (message: DecryptedMessage) => {
+    if (message.messageType !== "snap" || message.senderId === info?.myUserId || openedSnaps[message.id]) return
+    try {
+      const snap = JSON.parse(message.text ?? "") as { kind?: string; image?: string }
+      if (snap.kind !== "snap" || !snap.image) return
+      await consumeSnap(message.id)
+      setOpenedSnaps((current) => ({ ...current, [message.id]: snap.image! }))
+      await mutate()
+    } catch {
+      setDecrypted((current) => current.filter((item) => item.id !== message.id))
+    }
+  }, [info?.myUserId, openedSnaps, mutate])
 
   const handleSendSnap = useCallback(async () => {
     if (!snapPreview || !info?.otherPublicKey || sending) return
@@ -250,7 +268,7 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
                         Prompt guid&eacute;
                       </span>
                     ) : null}
-                    {m.messageType === "snap" && m.text ? (() => { try { const snap = JSON.parse(m.text) as { kind?: string; image?: string }; return snap.kind === "snap" && snap.image ? <img src={snap.image} alt="Snap reçu" className="max-h-72 max-w-full rounded-xl object-cover" /> : <p className="text-sm">Snap illisible</p> } catch { return <p className="text-sm">Snap illisible</p> } })() : <p className="text-sm leading-relaxed">{m.text ?? "Message chiffré (clé d'un autre appareil)"}</p>}
+                    {m.messageType === "snap" && m.text ? (() => { try { const snap = JSON.parse(m.text) as { kind?: string; image?: string }; if (snap.kind !== "snap" || !snap.image) return <p className="text-sm">Snap illisible</p>; if (m.senderId !== info.myUserId && !openedSnaps[m.id]) return <button type="button" onClick={() => handleOpenSnap(m)} className="flex items-center gap-3 rounded-xl bg-black/10 px-4 py-3 text-left text-sm font-semibold"><Camera className="size-5" />Ouvrir le snap<span className="text-xs font-normal opacity-70">1 lecture</span></button>; return <img src={openedSnaps[m.id] ?? snap.image} alt="Snap ouvert" className="max-h-72 max-w-full rounded-xl object-cover" /> } catch { return <p className="text-sm">Snap illisible</p> } })() : <p className="text-sm leading-relaxed">{m.text ?? "Message chiffré (clé d'un autre appareil)"}</p>}
                     <span className="mt-1 block text-right text-[10px] opacity-70">
                       {new Date(m.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
                     </span>

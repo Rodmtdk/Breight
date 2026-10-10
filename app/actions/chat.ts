@@ -9,7 +9,7 @@ import {
   moodEntries,
   auditLogs,
 } from "@/lib/db/schema"
-import { and, asc, desc, eq, or, sql } from "drizzle-orm"
+import { and, asc, desc, eq, gt, ne, or, sql } from "drizzle-orm"
 import { getUserId } from "./profile"
 
 async function assertParticipant(conversationId: string, userId: string) {
@@ -80,7 +80,7 @@ export async function getMessages(conversationId: string) {
   const rows = await db
     .select()
     .from(messages)
-    .where(eq(messages.conversationId, conversationId))
+    .where(and(eq(messages.conversationId, conversationId), or(ne(messages.messageType, "snap"), gt(messages.expiresAt, new Date()))))
     .orderBy(asc(messages.createdAt))
     .limit(200)
   return rows.map((m) => ({
@@ -99,6 +99,21 @@ export async function getMessages(conversationId: string) {
  * Store an E2E-encrypted message. The server only ever sees ciphertext.
  * Also updates today's empathy metrics for the sender.
  */
+export async function consumeSnap(messageId: string) {
+  const userId = await getUserId()
+  const [message] = await db.select({ id: messages.id, senderId: messages.senderId, messageType: messages.messageType }).from(messages).where(eq(messages.id, messageId)).limit(1)
+  if (!message || message.messageType !== "snap" || message.senderId === userId) throw new Error("Snap indisponible")
+  await assertParticipantForMessage(messageId, userId)
+  await db.delete(messages).where(eq(messages.id, messageId))
+  return { ok: true }
+}
+
+async function assertParticipantForMessage(messageId: string, userId: string) {
+  const [row] = await db.select({ conversationId: messages.conversationId }).from(messages).where(eq(messages.id, messageId)).limit(1)
+  if (!row) throw new Error("Snap indisponible")
+  await assertParticipant(row.conversationId, userId)
+}
+
 export async function sendEncryptedMessage(data: {
   conversationId: string
   ciphertext: string
@@ -117,6 +132,7 @@ export async function sendEncryptedMessage(data: {
     ciphertext: data.ciphertext,
     nonce: data.nonce,
     messageType: data.messageType ?? "text",
+    expiresAt: data.messageType === "snap" ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null,
     promptId: data.promptId ?? null,
     moodTag: data.moodTag ?? null,
   })
