@@ -24,36 +24,45 @@ export default function WelcomePage() {
           </Link>
         </header>
 
-        <div className="flex flex-1 flex-col justify-center py-10">
-          <h1 className="suite-display text-[clamp(3.6rem,14vw,7.25rem)] text-white">
+        <div className="flex flex-1 flex-col justify-center py-10 sm:py-16">
+          <div className="mb-8 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/45">
+            <span className="h-px w-8 bg-[#FFE14A]" aria-hidden="true" />
+            Réseau social privé
+          </div>
+          <h1 className="suite-display max-w-2xl text-[clamp(4.6rem,18vw,9.5rem)] text-white">
             Bref.
             <br />
             Réel.
             <br />
             <span className="text-[#FFE14A]">8.</span>
           </h1>
-          <p className="mt-6 text-base text-white/60">Photo. Amis. Maintenant.</p>
+          <p className="mt-7 max-w-xs text-lg leading-snug text-white/65">
+            Les bons moments, avec les bonnes personnes.
+          </p>
 
-          <ul className="mt-10 grid max-w-sm grid-cols-3 gap-3">
-            {ACTIONS.map(({ icon: Icon, label }) => (
-              <li key={label}>
-                <Link
-                  href="/sign-up"
-                  className="flex h-28 flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white/5 transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
-                >
-                  <Icon className="size-6 text-white" aria-hidden="true" />
-                  <span className="text-xs font-medium text-white/70">{label}</span>
-                </Link>
+          <ul className="mt-12 flex max-w-md divide-x divide-white/10 border-y border-white/10 py-4">
+            {ACTIONS.map(({ icon: Icon, label }, index) => (
+              <li key={label} className="flex flex-1 items-center gap-2 px-3 first:pl-0 last:pr-0 sm:gap-3">
+                <Icon className="size-4 text-[#FFE14A]" aria-hidden="true" />
+                <span className="text-xs font-medium text-white/65">0{index + 1} {label}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <Link href="/sign-up" className="pb-2">
-          <Button className="h-14 w-full rounded-2xl bg-[#FFE14A] text-base font-bold text-black shadow-[0_16px_40px_-18px_#FFE14A] transition-transform duration-200 hover:bg-[#FFE14A] active:scale-[0.98]">
-            Créer un compte
-          </Button>
-        </Link>
+        <div className="grid gap-3 pb-2 sm:grid-cols-[1fr_auto]">
+          <Link href="/sign-up">
+            <Button className="h-14 w-full rounded-2xl bg-[#FFE14A] text-base font-bold text-black shadow-[0_16px_40px_-18px_#FFE14A] transition-transform duration-200 hover:bg-[#FFE14A] active:scale-[0.98]">
+              Commencer
+            </Button>
+          </Link>
+          <Link
+            href="/sign-in"
+            className="flex h-14 items-center justify-center rounded-2xl border border-white/15 px-6 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+          >
+            Se connecter
+          </Link>
+        </div>
       </div>
     </main>
   )
