@@ -53,8 +53,8 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
 
       {/* ── Top bar ── */}
       <div className="flex items-center justify-between px-5 py-5 max-w-lg mx-auto w-full">
-        <Link href="/welcome" className="font-serif text-2xl font-bold tracking-tight bg-gradient-to-r from-jade via-foreground to-ruby bg-clip-text text-transparent">
-          BR8
+        <Link href="/welcome" className="suite-display text-3xl text-foreground">
+          BR<span className="text-gold">8</span>
         </Link>
         <Link
           href={isSignUp ? '/sign-in' : '/sign-up'}
@@ -71,17 +71,17 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
 
         {/* ── Headline ── */}
         <div>
-          <h1 className="font-serif text-[2rem] font-semibold tracking-tight text-foreground text-balance leading-snug">
+          <h1 className="suite-display text-5xl text-foreground text-balance">
             {isSignUp ? (
-              <>Rejoins <span className="italic text-jade">BR8</span></>
+              <>Rejoins <span className="text-gold">BR8</span></>
             ) : (
-              <>Content de te <span className="italic text-jade">revoir</span></>
+              <>Content de te <span className="text-cobalt">revoir</span></>
             )}
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             {isSignUp
-              ? 'Crée ton compte gratuitement en quelques secondes.'
-              : 'Reconnecte-toi pour reprendre tes conversations.'}
+              ? <>Un compte. <span className="font-semibold text-jade">Gratuit</span>. Quelques secondes.</>
+              : <>Reprends tes <span className="font-semibold text-ruby">conversations</span>.</>}
           </p>
         </div>
 
