@@ -25,10 +25,12 @@ export default function WelcomePage() {
         </header>
 
         <div className="flex flex-1 flex-col justify-center py-10">
-          <h1 className="suite-display text-[clamp(4.75rem,16vw,8.5rem)] text-white">
-            Droit
+          <h1 className="suite-display text-[clamp(3.6rem,14vw,7.25rem)] text-white">
+            Bref.
             <br />
-            au <span className="text-[#FFE14A]">but.</span>
+            Réel.
+            <br />
+            <span className="text-[#FFE14A]">8.</span>
           </h1>
           <p className="mt-6 text-base text-white/60">Photo. Amis. Maintenant.</p>
 
