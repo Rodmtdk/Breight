@@ -27,17 +27,17 @@ export default function WelcomePage() {
         <div className="flex flex-1 flex-col justify-center py-10 sm:py-16">
           <div className="mb-8 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/45">
             <span className="h-px w-8 bg-[#FFE14A]" aria-hidden="true" />
-            Réseau social privé
+            Bons moments · relations réelles
           </div>
-          <h1 className="suite-display max-w-2xl text-[clamp(4.6rem,18vw,9.5rem)] text-white">
-            Bref.
+          <h1 className="suite-display max-w-2xl text-[clamp(3.8rem,14vw,8rem)] text-white">
+            Bons
             <br />
-            Réel.
+            moments.
             <br />
-            <span className="text-[#FFE14A]">8.</span>
+            <span className="text-[#FFE14A]">Relations réelles.</span>
           </h1>
-          <p className="mt-7 max-w-xs text-lg leading-snug text-white/65">
-            Les bons moments, avec les bonnes personnes.
+          <p className="mt-7 max-w-sm text-lg leading-snug text-white/65">
+            BR8 rassemble ce qui compte : une image, un message, un moment partagé.
           </p>
 
           <ul className="mt-12 flex max-w-md divide-x divide-white/10 border-y border-white/10 py-4">
