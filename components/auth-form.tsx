@@ -73,15 +73,13 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
         <div>
           <h1 className="suite-display text-5xl text-foreground text-balance">
             {isSignUp ? (
-              <>Rejoins <span className="text-gold">BR8</span></>
+              <>Rejoins <span className="text-[#FFE14A]">BR8</span></>
             ) : (
-              <>Content de te <span className="text-cobalt">revoir</span></>
+              <>Content de te <span className="text-[#FFE14A]">revoir</span></>
             )}
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            {isSignUp
-              ? <>Un compte. <span className="font-semibold text-jade">Gratuit</span>. Quelques secondes.</>
-              : <>Reprends tes <span className="font-semibold text-ruby">conversations</span>.</>}
+            {isSignUp ? 'Un compte. Gratuit. Vite.' : 'Reprends tes conversations.'}
           </p>
         </div>
 
